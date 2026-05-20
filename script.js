@@ -1,0 +1,421 @@
+/**
+ * BB Realty - Premium Real Estate Website Scripts
+ * Features: Sticky Navbar, Mobile Drawer, Property Filter, Location Corridor Filter, Modals, Forms validation
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ==========================================================================
+       1. Sticky Header & Active Nav Indicators on Scroll
+       ========================================================================== */
+    const header = document.querySelector('.site-header');
+    const backToTop = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+        // Sticky Header class
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+
+        // Back to top button visibility
+        if (window.scrollY > 500) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
+        }
+        
+        // Active Nav Indicator based on Section Scroll
+        updateActiveNavLink();
+    });
+
+    // Scroll to Top action
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function updateActiveNavLink() {
+        let currentSectionId = '';
+        const scrollPosition = window.scrollY + 120; // offset header height
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                currentSectionId = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.add('active');
+            } else if (scrollPosition < 500 && link.getAttribute('href') === '#') {
+                // If we are at the top, activate the home link
+                link.classList.add('active');
+            }
+        });
+    }
+
+    /* ==========================================================================
+       2. Mobile Navigation Drawer Toggle
+       ========================================================================== */
+    const menuToggle = document.getElementById('menuToggle');
+    const drawerClose = document.getElementById('drawerClose');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+
+    function openDrawer() {
+        mobileDrawer.classList.add('open');
+        drawerOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Disable background scrolling
+    }
+
+    function closeDrawer() {
+        mobileDrawer.classList.remove('open');
+        drawerOverlay.classList.remove('open');
+        document.body.style.overflow = ''; // Restore scroll
+    }
+
+    menuToggle.addEventListener('click', openDrawer);
+    drawerClose.addEventListener('click', closeDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+
+    // Close drawer when a link is clicked
+    drawerLinks.forEach(link => {
+        link.addEventListener('click', closeDrawer);
+    });
+
+
+    /* ==========================================================================
+       3. Quick Interactive Search Console
+       ========================================================================== */
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    let activeAction = 'buy'; // Default search context
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            tabButtons.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeAction = e.target.getAttribute('data-action');
+        });
+    });
+
+    const btnConsoleSearch = document.getElementById('btnConsoleSearch');
+    btnConsoleSearch.addEventListener('click', () => {
+        const propType = document.getElementById('consoleType').value;
+        const locationVal = document.getElementById('consoleLoc').value;
+        const budgetVal = document.getElementById('consoleBudget').value;
+
+        // Visual scroll transition to Featured Projects section
+        const projectsSection = document.getElementById('projects');
+        projectsSection.scrollIntoView({ behavior: 'smooth' });
+
+        // Apply filters to Featured Projects list based on selections
+        filterFeaturedProjects(propType, locationVal);
+    });
+
+    function filterFeaturedProjects(type, location) {
+        const cards = document.querySelectorAll('.project-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const cardType = card.getAttribute('data-type');
+            const cardMetaText = card.querySelector('.project-meta').innerText.toLowerCase();
+            
+            let matchesType = (type === 'all' || cardType === type);
+            let matchesLocation = true;
+            
+            if (location !== 'all') {
+                if (location === 'dxp') {
+                    matchesLocation = cardMetaText.includes('dwarka expressway');
+                } else if (location === 'new-gurgaon') {
+                    // Check if it includes Sector 81-92 sectors
+                    matchesLocation = cardMetaText.includes('sector 90') || cardMetaText.includes('sector 81') || cardMetaText.includes('sector 88') || cardMetaText.includes('sector 92');
+                } else {
+                    matchesLocation = cardMetaText.includes(`sector ${location}`);
+                }
+            }
+
+            if (matchesType && matchesLocation) {
+                card.style.display = 'flex';
+                // Trigger smooth appearance
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+                visibleCount++;
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    if (card.style.opacity === '0') {
+                        card.style.display = 'none';
+                    }
+                }, 300);
+            }
+        });
+
+        // Set 'All Projects' filter button active as reset if console search was performed
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+    }
+
+
+    /* ==========================================================================
+       4. Featured Projects Filters
+       ========================================================================== */
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            const filterValue = e.target.getAttribute('data-filter');
+
+            projectCards.forEach(card => {
+                const cardBuilder = card.getAttribute('data-builder');
+                
+                if (filterValue === 'all' || cardBuilder === filterValue) {
+                    card.style.display = 'flex';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        if (card.style.opacity === '0') {
+                            card.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+        });
+    });
+
+
+    /* ==========================================================================
+       5. Location Corridor Filter
+       ========================================================================== */
+    const locToggleBtns = document.querySelectorAll('.loc-toggle-btn');
+    const locationCards = document.querySelectorAll('.location-card');
+
+    locToggleBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            locToggleBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+
+            const corridorVal = e.target.getAttribute('data-corridor');
+
+            locationCards.forEach(card => {
+                const cardCorridor = card.getAttribute('data-corridor');
+
+                if (corridorVal === 'all' || cardCorridor === corridorVal) {
+                    card.style.display = 'block';
+                    card.style.opacity = '1';
+                } else {
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        if (card.style.opacity === '0') {
+                            card.style.display = 'none';
+                        }
+                    }, 200);
+                }
+            });
+        });
+    });
+
+
+    /* ==========================================================================
+       6. Modals Operations (Open, Dynamic Fill, Close)
+       ========================================================================== */
+    const modals = document.querySelectorAll('.modal-dialog-overlay');
+    const modalTriggers = document.querySelectorAll('.modal-trigger');
+    const modalCloseBtns = document.querySelectorAll('.modal-close');
+    
+    // Dynamic pre-fill fields
+    const modalProjectField = document.getElementById('modalProjectField');
+    const modalBuilderField = document.getElementById('modalBuilderField');
+    const modalDescText = document.getElementById('modalDescText');
+
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            const targetId = e.currentTarget.getAttribute('data-target');
+            const modal = document.getElementById(targetId);
+            
+            // If details are present on trigger button, prefill the form
+            const projectName = e.currentTarget.getAttribute('data-project');
+            const builderName = e.currentTarget.getAttribute('data-builder');
+
+            if (projectName && builderName) {
+                modalProjectField.value = projectName;
+                modalBuilderField.value = builderName;
+                modalDescText.innerHTML = `Schedule an exclusive site visit at <strong>${projectName}</strong> by ${builderName}. Register below.`;
+            } else {
+                modalProjectField.value = "General Inquiry";
+                modalBuilderField.value = "BB Realty";
+                modalDescText.innerHTML = "Register your interest to download brochures and receive direct pricing plans.";
+            }
+
+            if (modal) {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    function closeModal(modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        
+        // Reset success state screens after closure delay
+        setTimeout(() => {
+            const successState = modal.querySelector('.modal-success-state');
+            const form = modal.querySelector('.modal-form');
+            if (successState && form) {
+                successState.classList.remove('active');
+                form.style.display = 'flex';
+                form.reset();
+            }
+        }, 300);
+    }
+
+    modalCloseBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const modal = e.target.closest('.modal-dialog-overlay');
+            closeModal(modal);
+        });
+    });
+
+    // Close on overlay backdrop click
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal(modal);
+            }
+        });
+    });
+
+    // Close on success finish button click
+    const modalCloseSuccess = document.querySelector('.modal-close-success');
+    if (modalCloseSuccess) {
+        modalCloseSuccess.addEventListener('click', (e) => {
+            const modal = e.target.closest('.modal-dialog-overlay');
+            closeModal(modal);
+        });
+    }
+
+
+    /* ==========================================================================
+       7. Lead Forms Validation & Custom Success Feedback
+       ========================================================================== */
+    
+    // Bottom Lead Form
+    const leadForm = document.getElementById('leadForm');
+    const formSuccessState = document.getElementById('formSuccessState');
+    const btnResetForm = document.getElementById('btnResetForm');
+
+    leadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Simulating async backend request
+        const submitBtn = leadForm.querySelector('.btn-submit');
+        submitBtn.innerText = 'Sending Request...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+            leadForm.style.display = 'none';
+            formSuccessState.classList.add('active');
+            
+            submitBtn.innerText = 'Request Callback';
+            submitBtn.disabled = false;
+        }, 1200);
+    });
+
+    btnResetForm.addEventListener('click', () => {
+        formSuccessState.classList.remove('active');
+        leadForm.style.display = 'flex';
+        leadForm.reset();
+    });
+
+    // Modal Dialog Lead Form
+    const modalForm = document.getElementById('modalForm');
+    const modalSuccessState = document.getElementById('modalSuccessState');
+
+    modalForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const submitBtn = modalForm.querySelector('.btn-submit');
+        submitBtn.innerText = 'Submitting Request...';
+        submitBtn.disabled = true;
+
+        // Capture data values
+        const name = document.getElementById('modalName').value;
+        const phone = document.getElementById('modalPhone').value;
+        const project = modalProjectField.value;
+        const builder = modalBuilderField.value;
+
+        // Custom logging simulation (can be configured to WhatsApp or APIs)
+        console.log(`BB Realty Lead Received: Name: ${name}, Phone: ${phone}, Project Target: ${project} (${builder})`);
+
+        setTimeout(() => {
+            modalForm.style.display = 'none';
+            modalSuccessState.classList.add('active');
+            
+            submitBtn.innerText = 'Request Call Back';
+            submitBtn.disabled = false;
+        }, 1200);
+    });
+
+
+    /* ==========================================================================
+       8. Stats Count-Up Animation
+       ========================================================================== */
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let animated = false;
+
+    const animateStats = () => {
+        statNumbers.forEach(stat => {
+            const target = parseInt(stat.getAttribute('data-count'), 10);
+            let count = 0;
+            const speed = target / 30; // speed increments
+
+            const counter = setInterval(() => {
+                count += speed;
+                if (count >= target) {
+                    stat.innerText = target + '+';
+                    clearInterval(counter);
+                } else {
+                    stat.innerText = Math.floor(count) + '+';
+                }
+            }, 30);
+        });
+    };
+
+    // Trigger only when statistics section is in view
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+                animateStats();
+                animated = true;
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.querySelector('.stats-bar-section');
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+});

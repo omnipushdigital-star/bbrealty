@@ -1,0 +1,14 @@
+# Node dependency files (if any are added later)
+node_modules/
+
+# OS metadata files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Log files
+*.log
+npm-debug.log*
+
+# Server lock files
+package-lock.json
