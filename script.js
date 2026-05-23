@@ -244,30 +244,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const modals = document.querySelectorAll('.modal-dialog-overlay');
     const modalTriggers = document.querySelectorAll('.modal-trigger');
     const modalCloseBtns = document.querySelectorAll('.modal-close');
-    
-    // Dynamic pre-fill fields
-    const modalProjectField = document.getElementById('modalProjectField');
-    const modalBuilderField = document.getElementById('modalBuilderField');
-    const modalDescText = document.getElementById('modalDescText');
 
     modalTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             const targetId = e.currentTarget.getAttribute('data-target');
             const modal = document.getElementById(targetId);
-            
-            // If details are present on trigger button, prefill the form
-            const projectName = e.currentTarget.getAttribute('data-project');
-            const builderName = e.currentTarget.getAttribute('data-builder');
-
-            if (projectName && builderName) {
-                modalProjectField.value = projectName;
-                modalBuilderField.value = builderName;
-                modalDescText.innerHTML = `Schedule an exclusive site visit at <strong>${projectName}</strong> by ${builderName}. Register below.`;
-            } else {
-                modalProjectField.value = "General Inquiry";
-                modalBuilderField.value = "BB Realty";
-                modalDescText.innerHTML = "Register your interest to download brochures and receive direct pricing plans.";
-            }
 
             if (modal) {
                 modal.classList.add('open');
@@ -420,41 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         leadForm.reset();
     });
 
-    // Modal Dialog Lead Form
-    const modalForm = document.getElementById('modalForm');
-    const modalSuccessState = document.getElementById('modalSuccessState');
 
-    modalForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const submitBtn = modalForm.querySelector('.btn-submit');
-        submitBtn.innerText = 'Routing Lead...';
-        submitBtn.disabled = true;
-
-        const leadData = {
-            name: document.getElementById('modalName').value,
-            phone: document.getElementById('modalPhone').value,
-            property_type: document.getElementById('modalProperty').value,
-            budget: document.getElementById('modalBudget').value,
-            location: document.getElementById('modalLocation') ? document.getElementById('modalLocation').value : 'Not specified',
-            project: modalProjectField.value,
-            builder: modalBuilderField.value
-        };
-
-        // Send Email notifications if API key is configured
-        await sendEmailLead(leadData);
-
-        // Open WhatsApp chat prefilled with info
-        sendWhatsAppLead(leadData);
-
-        setTimeout(() => {
-            modalForm.style.display = 'none';
-            modalSuccessState.classList.add('active');
-            
-            submitBtn.innerText = 'Request Call Back';
-            submitBtn.disabled = false;
-        }, 1000);
-    });
 
 
     /* ==========================================================================
