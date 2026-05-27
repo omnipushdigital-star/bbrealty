@@ -139,8 +139,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (location === 'dxp') {
                     matchesLocation = cardMetaText.includes('dwarka expressway');
                 } else if (location === 'new-gurgaon') {
-                    // Check if it includes Sector 81-92 sectors
-                    matchesLocation = cardMetaText.includes('sector 90') || cardMetaText.includes('sector 81') || cardMetaText.includes('sector 88') || cardMetaText.includes('sector 92');
+                    // New Gurgaon covers sectors 81–92 and Sector 9 Manesar
+                    matchesLocation = cardMetaText.includes('new gurgaon') ||
+                                      cardMetaText.includes('sector 81') ||
+                                      cardMetaText.includes('sector 82') ||
+                                      cardMetaText.includes('sector 83') ||
+                                      cardMetaText.includes('sector 84') ||
+                                      cardMetaText.includes('sector 85') ||
+                                      cardMetaText.includes('sector 88') ||
+                                      cardMetaText.includes('sector 89') ||
+                                      cardMetaText.includes('sector 90') ||
+                                      cardMetaText.includes('sector 92') ||
+                                      cardMetaText.includes('sector 9') ||
+                                      cardMetaText.includes('manesar');
+                } else if (location === 'spr') {
+                    // SPR Road covers sectors 78–80 and SPR Road label
+                    matchesLocation = cardMetaText.includes('spr road') ||
+                                      cardMetaText.includes('sector 78') ||
+                                      cardMetaText.includes('sector 79') ||
+                                      cardMetaText.includes('sector 80');
                 } else {
                     matchesLocation = cardMetaText.includes(`sector ${location}`);
                 }
