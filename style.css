@@ -1641,15 +1641,12 @@ img {
     border-radius: 8px;
     overflow: hidden;
     background-color: var(--bg-light);
+    min-height: 493px; /* matches GHL data-height so wrapper doesn't collapse before script loads */
 }
 
 @media (max-width: 600px) {
     .modal-dialog-card--ghl {
         padding: 24px 16px 16px;
-    }
-
-    .ghl-iframe-wrapper iframe {
-        height: 480px !important;
     }
 }
 
