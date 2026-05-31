@@ -1551,9 +1551,10 @@ img {
     visibility: hidden;
     transition: var(--transition-normal);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 24px;
+    overflow-y: auto;
 }
 
 .modal-dialog-overlay.open {
@@ -1566,13 +1567,16 @@ img {
     border-radius: 8px;
     width: 100%;
     max-width: 480px;
+    max-height: 90vh;
     padding: 40px;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-gold);
     position: relative;
     transform: scale(0.9);
     transition: var(--transition-normal);
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: auto 0;
 }
 
 .modal-dialog-overlay.open .modal-dialog-card {
@@ -1627,7 +1631,10 @@ img {
 /* GHL Iframe Modal Variant */
 .modal-dialog-card--ghl {
     max-width: 560px;
+    max-height: 92vh;
     padding: 32px 32px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .ghl-iframe-wrapper {
