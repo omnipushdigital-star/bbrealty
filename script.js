@@ -270,6 +270,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (modal) {
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
+
+                // If it is the enquiry modal, dynamically populate the GHL iframe src with project context
+                if (targetId === 'enquiry-modal') {
+                    const project = e.currentTarget.getAttribute('data-project') || '';
+                    const builder = e.currentTarget.getAttribute('data-builder') || '';
+                    const iframe = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
+                    if (iframe) {
+                        const baseSrc = "https://www.bbrealty.in/widget/form/nwHklUMHGDfLp7UoKtBb";
+                        let newSrc = baseSrc;
+                        if (project) {
+                            newSrc += `?project=${encodeURIComponent(project)}&builder=${encodeURIComponent(builder)}&selected_project=${encodeURIComponent(project)}&selected_builder=${encodeURIComponent(builder)}`;
+                        }
+                        iframe.src = newSrc;
+                    }
+                }
             }
         });
     });
