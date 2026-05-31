@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const builder = e.currentTarget.getAttribute('data-builder') || '';
                     const iframe = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
                     if (iframe) {
-                        const baseSrc = "https://www.bbrealty.in/widget/form/nwHklUMHGDfLp7UoKtBb";
+                        const baseSrc = "https://link.msgsndr.com/widget/form/nwHklUMHGDfLp7UoKtBb";
                         let newSrc = baseSrc;
                         if (project) {
                             newSrc += `?project=${encodeURIComponent(project)}&builder=${encodeURIComponent(builder)}&selected_project=${encodeURIComponent(project)}&selected_builder=${encodeURIComponent(builder)}`;
