@@ -275,14 +275,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (targetId === 'enquiry-modal') {
                     const project = e.currentTarget.getAttribute('data-project') || '';
                     const builder = e.currentTarget.getAttribute('data-builder') || '';
-                    const iframe = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
+                    const source  = e.currentTarget.getAttribute('data-source')  || 'website';
+                    const iframe  = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
                     if (iframe) {
                         const baseSrc = "https://link.msgsndr.com/widget/form/nwHklUMHGDfLp7UoKtBb";
-                        let newSrc = baseSrc;
+                        let params = `tag=${encodeURIComponent(source)}`;
                         if (project) {
-                            newSrc += `?project=${encodeURIComponent(project)}&builder=${encodeURIComponent(builder)}&selected_project=${encodeURIComponent(project)}&selected_builder=${encodeURIComponent(builder)}`;
+                            params += `&project=${encodeURIComponent(project)}&builder=${encodeURIComponent(builder)}&selected_project=${encodeURIComponent(project)}&selected_builder=${encodeURIComponent(builder)}`;
                         }
-                        iframe.src = newSrc;
+                        iframe.src = `${baseSrc}?${params}`;
                     }
                 }
             }
