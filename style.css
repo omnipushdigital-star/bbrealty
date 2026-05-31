@@ -1797,3 +1797,56 @@ img {
         transform: translateY(0);
     }
 }
+
+/* ==========================================================================
+   9. Premium GHL Form Skeleton Shimmer Loaders
+   ========================================================================== */
+.ghl-iframe-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.ghl-skeleton-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    background-color: var(--bg-white);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    z-index: 5;
+    border-radius: 8px;
+}
+
+.ghl-skeleton-loader .skeleton-field {
+    height: 48px;
+    width: 100%;
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: ghlShimmer 1.5s infinite linear;
+    border-radius: 8px;
+}
+
+.ghl-skeleton-loader .skeleton-button {
+    height: 50px;
+    width: 100%;
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: ghlShimmer 1.5s infinite linear;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+@keyframes ghlShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

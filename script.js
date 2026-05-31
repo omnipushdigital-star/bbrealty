@@ -277,7 +277,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const builder = e.currentTarget.getAttribute('data-builder') || '';
                     const source  = e.currentTarget.getAttribute('data-source')  || 'website';
                     const iframe  = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
+                    const loader  = document.getElementById('ghl-modal-loader');
                     if (iframe) {
+                        // Hide iframe and show skeleton shimmer loader during transition
+                        if (loader) loader.style.display = 'flex';
+                        iframe.style.opacity = '0';
+
                         const baseSrc = "https://link.msgsndr.com/widget/form/nwHklUMHGDfLp7UoKtBb";
                         let params = `tag=${encodeURIComponent(source)}&source=${encodeURIComponent(source)}&Source=${encodeURIComponent(source)}&utm_source=${encodeURIComponent(source)}`;
                         if (project) {
@@ -286,6 +291,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (builder) {
                             params += `&builder=${encodeURIComponent(builder)}&Builder=${encodeURIComponent(builder)}&builder_name=${encodeURIComponent(builder)}&selected_builder=${encodeURIComponent(builder)}`;
                         }
+
+                        // Smooth transition once the new dynamic GHL form loads
+                        iframe.onload = () => {
+                            if (loader) loader.style.display = 'none';
+                            iframe.style.opacity = '1';
+                        };
+
                         iframe.src = `${baseSrc}?${params}`;
                     }
                 }
@@ -369,5 +381,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const statsSection = document.querySelector('.stats-bar-section');
     if (statsSection) {
         observer.observe(statsSection);
+    }
+
+    /* ==========================================================================
+       10. GHL Iframes Initial Load Optimization (Skeleton Dismissal)
+       ========================================================================== */
+    const consultationIframe = document.getElementById('inline-consultation-nwHklUMHGDfLp7UoKtBb');
+    const consultationLoader = document.getElementById('ghl-consultation-loader');
+    if (consultationIframe) {
+        consultationIframe.onload = () => {
+            if (consultationLoader) consultationLoader.style.display = 'none';
+            consultationIframe.style.opacity = '1';
+        };
+    }
+
+    const modalIframe = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
+    const modalLoader = document.getElementById('ghl-modal-loader');
+    if (modalIframe) {
+        modalIframe.onload = () => {
+            if (modalLoader) modalLoader.style.display = 'none';
+            modalIframe.style.opacity = '1';
+        };
     }
 });
