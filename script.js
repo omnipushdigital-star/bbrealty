@@ -265,68 +265,59 @@ document.addEventListener('DOMContentLoaded', () => {
     modalTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             const targetId = e.currentTarget.getAttribute('data-target');
-            const modal = document.getElementById(targetId);
 
+            // Redirect to the new GHL landing page instead of opening the local modal dialog
+            if (targetId === 'enquiry-modal') {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const project = e.currentTarget.getAttribute('data-project') || '';
+                const builder = e.currentTarget.getAttribute('data-builder') || '';
+                const source  = e.currentTarget.getAttribute('data-source')  || 'website';
+
+                const baseUrl = "https://leads.bbrealty.in/";
+                let params = `tag=${encodeURIComponent(source)}&source=${encodeURIComponent(source)}&Source=${encodeURIComponent(source)}&utm_source=${encodeURIComponent(source)}`;
+                if (project) {
+                    params += `&project=${encodeURIComponent(project)}` +
+                              `&Project=${encodeURIComponent(project)}` +
+                              `&project_name=${encodeURIComponent(project)}` +
+                              `&Project_Name=${encodeURIComponent(project)}` +
+                              `&projectName=${encodeURIComponent(project)}` +
+                              `&ProjectName=${encodeURIComponent(project)}` +
+                              `&property=${encodeURIComponent(project)}` +
+                              `&Property=${encodeURIComponent(project)}` +
+                              `&property_name=${encodeURIComponent(project)}` +
+                              `&Property_Name=${encodeURIComponent(project)}` +
+                              `&propertyName=${encodeURIComponent(project)}` +
+                              `&PropertyName=${encodeURIComponent(project)}` +
+                              `&selected_project=${encodeURIComponent(project)}` +
+                              `&selected_property=${encodeURIComponent(project)}` +
+                              `&selectedProject=${encodeURIComponent(project)}` +
+                              `&selectedProperty=${encodeURIComponent(project)}` +
+                              `&interested_project=${encodeURIComponent(project)}` +
+                              `&interestedProject=${encodeURIComponent(project)}` +
+                              `&interested_property=${encodeURIComponent(project)}` +
+                              `&interestedProperty=${encodeURIComponent(project)}`;
+                }
+                if (builder) {
+                    params += `&builder=${encodeURIComponent(builder)}` +
+                              `&Builder=${encodeURIComponent(builder)}` +
+                              `&builder_name=${encodeURIComponent(builder)}` +
+                              `&Builder_Name=${encodeURIComponent(builder)}` +
+                              `&builderName=${encodeURIComponent(builder)}` +
+                              `&BuilderName=${encodeURIComponent(builder)}` +
+                              `&selected_builder=${encodeURIComponent(builder)}` +
+                              `&selectedBuilder=${encodeURIComponent(builder)}`;
+                }
+
+                window.location.href = `${baseUrl}?${params}`;
+                return;
+            }
+
+            const modal = document.getElementById(targetId);
             if (modal) {
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
-
-                // If it is the enquiry modal, dynamically populate the GHL iframe src with project context
-                if (targetId === 'enquiry-modal') {
-                    const project = e.currentTarget.getAttribute('data-project') || '';
-                    const builder = e.currentTarget.getAttribute('data-builder') || '';
-                    const source  = e.currentTarget.getAttribute('data-source')  || 'website';
-                    const iframe  = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
-                    const loader  = document.getElementById('ghl-modal-loader');
-                    if (iframe) {
-                        // Hide iframe and show skeleton shimmer loader during transition
-                        if (loader) loader.style.display = 'flex';
-                        iframe.style.opacity = '0';
-
-                        const baseSrc = "https://link.msgsndr.com/widget/form/nwHklUMHGDfLp7UoKtBb";
-                        let params = `tag=${encodeURIComponent(source)}&source=${encodeURIComponent(source)}&Source=${encodeURIComponent(source)}&utm_source=${encodeURIComponent(source)}`;
-                        if (project) {
-                            params += `&project=${encodeURIComponent(project)}` +
-                                      `&Project=${encodeURIComponent(project)}` +
-                                      `&project_name=${encodeURIComponent(project)}` +
-                                      `&Project_Name=${encodeURIComponent(project)}` +
-                                      `&projectName=${encodeURIComponent(project)}` +
-                                      `&ProjectName=${encodeURIComponent(project)}` +
-                                      `&property=${encodeURIComponent(project)}` +
-                                      `&Property=${encodeURIComponent(project)}` +
-                                      `&property_name=${encodeURIComponent(project)}` +
-                                      `&Property_Name=${encodeURIComponent(project)}` +
-                                      `&propertyName=${encodeURIComponent(project)}` +
-                                      `&PropertyName=${encodeURIComponent(project)}` +
-                                      `&selected_project=${encodeURIComponent(project)}` +
-                                      `&selected_property=${encodeURIComponent(project)}` +
-                                      `&selectedProject=${encodeURIComponent(project)}` +
-                                      `&selectedProperty=${encodeURIComponent(project)}` +
-                                      `&interested_project=${encodeURIComponent(project)}` +
-                                      `&interestedProject=${encodeURIComponent(project)}` +
-                                      `&interested_property=${encodeURIComponent(project)}` +
-                                      `&interestedProperty=${encodeURIComponent(project)}`;
-                        }
-                        if (builder) {
-                            params += `&builder=${encodeURIComponent(builder)}` +
-                                      `&Builder=${encodeURIComponent(builder)}` +
-                                      `&builder_name=${encodeURIComponent(builder)}` +
-                                      `&Builder_Name=${encodeURIComponent(builder)}` +
-                                      `&builderName=${encodeURIComponent(builder)}` +
-                                      `&BuilderName=${encodeURIComponent(builder)}` +
-                                      `&selected_builder=${encodeURIComponent(builder)}` +
-                                      `&selectedBuilder=${encodeURIComponent(builder)}`;
-                        }
-
-                        // Smooth transition once the new dynamic GHL form loads
-                        iframe.onload = () => {
-                            if (loader) loader.style.display = 'none';
-                            iframe.style.opacity = '1';
-                        };
-
-                        iframe.src = `${baseSrc}?${params}`;
-                    }
-                }
             }
         });
     });
