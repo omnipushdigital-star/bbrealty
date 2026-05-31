@@ -278,10 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const source  = e.currentTarget.getAttribute('data-source')  || 'website';
                     const iframe  = document.getElementById('inline-nwHklUMHGDfLp7UoKtBb');
                     if (iframe) {
-                        const baseSrc = "https://link.msgsndr.com/widget/form/nwHklUMHGDfLp7UoKtBb";
-                        let params = `tag=${encodeURIComponent(source)}`;
+                        const baseSrc = "https://www.bbrealty.in/widget/form/nwHklUMHGDfLp7UoKtBb";
+                        let params = `tag=${encodeURIComponent(source)}&source=${encodeURIComponent(source)}&Source=${encodeURIComponent(source)}&utm_source=${encodeURIComponent(source)}`;
                         if (project) {
-                            params += `&project=${encodeURIComponent(project)}&builder=${encodeURIComponent(builder)}&selected_project=${encodeURIComponent(project)}&selected_builder=${encodeURIComponent(builder)}`;
+                            params += `&project=${encodeURIComponent(project)}&Project=${encodeURIComponent(project)}&project_name=${encodeURIComponent(project)}&property=${encodeURIComponent(project)}&property_name=${encodeURIComponent(project)}&selected_project=${encodeURIComponent(project)}`;
+                        }
+                        if (builder) {
+                            params += `&builder=${encodeURIComponent(builder)}&Builder=${encodeURIComponent(builder)}&builder_name=${encodeURIComponent(builder)}&selected_builder=${encodeURIComponent(builder)}`;
                         }
                         iframe.src = `${baseSrc}?${params}`;
                     }
