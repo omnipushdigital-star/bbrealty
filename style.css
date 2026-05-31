@@ -1136,12 +1136,12 @@ img {
 
 .consultation-form-wrapper {
     background-color: var(--bg-white);
-    padding: 40px;
     border-radius: 8px;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-color);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    padding: 32px 32px 0;
 }
 
 .form-header {
@@ -1567,7 +1567,6 @@ img {
     border-radius: 8px;
     width: 100%;
     max-width: 480px;
-    max-height: 90vh;
     padding: 40px;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-gold);
@@ -1630,23 +1629,34 @@ img {
 
 /* GHL Iframe Modal Variant */
 .modal-dialog-card--ghl {
-    max-width: 560px;
-    max-height: 92vh;
-    padding: 32px 32px 24px;
+    max-width: 600px;
+    padding: 28px 28px 0;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .ghl-iframe-wrapper {
     border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--bg-light);
-    min-height: 493px; /* matches GHL data-height so wrapper doesn't collapse before script loads */
+    overflow: visible;
+    background-color: transparent;
+    min-height: 500px;
+    width: 100%;
+}
+
+.ghl-iframe-wrapper iframe {
+    display: block;
+    width: 100%;
+    min-height: 500px;
+    border: none;
+    border-radius: 8px;
 }
 
 @media (max-width: 600px) {
     .modal-dialog-card--ghl {
-        padding: 24px 16px 16px;
+        padding: 20px 12px 0;
+    }
+    .consultation-form-wrapper {
+        padding: 24px 16px 0;
     }
 }
 
