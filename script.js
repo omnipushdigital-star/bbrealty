@@ -292,17 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeModal(modal) {
         modal.classList.remove('open');
         document.body.style.overflow = '';
-        
-        // Reset success state screens after closure delay
-        setTimeout(() => {
-            const successState = modal.querySelector('.modal-success-state');
-            const form = modal.querySelector('.modal-form');
-            if (successState && form) {
-                successState.classList.remove('active');
-                form.style.display = 'flex';
-                form.reset();
-            }
-        }, 300);
     }
 
     modalCloseBtns.forEach(btn => {
@@ -332,106 +321,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* ==========================================================================
-       7. Lead Forms Validation, WhatsApp Routing & Web3Forms Integration
+       7. All leads are now captured via GHL (GoHighLevel) iframe forms.
+          The old custom form handlers have been removed.
        ========================================================================== */
-    
-    // Config: Set your WhatsApp number (with country code, no symbols) and optional Web3Forms Key
-    const CONFIG = {
-        whatsappNumber: '919729255525', // Default recipient number
-        web3FormsAccessKey: '' // Paste your Web3Forms access key here to receive email alerts on info@bbrealty.in
-    };
-
-    // Helper to format and redirect to WhatsApp
-    function sendWhatsAppLead(data) {
-        let message = `*New Lead Enquiry - BB Realty*\n\n`;
-        message += `*Name:* ${data.name}\n`;
-        message += `*Phone:* ${data.phone}\n`;
-        message += `*Property Type:* ${data.property_type}\n`;
-        message += `*Budget:* ${data.budget}\n`;
-        message += `*Location:* ${data.location}\n`;
-        
-        if (data.project && data.project !== 'General Inquiry') {
-            message += `*Project interest:* ${data.project} (by ${data.builder})\n`;
-        }
-
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`;
-        
-        // Open WhatsApp in a new tab
-        window.open(whatsappUrl, '_blank');
-    }
-
-    // Helper to send data to Web3Forms if Access Key is configured
-    async function sendEmailLead(data) {
-        if (!CONFIG.web3FormsAccessKey) return;
-
-        const formData = new FormData();
-        formData.append('access_key', CONFIG.web3FormsAccessKey);
-        formData.append('subject', `New BB Realty Lead: ${data.name}`);
-        formData.append('name', data.name);
-        formData.append('phone', data.phone);
-        formData.append('property_type', data.property_type);
-        formData.append('budget', data.budget);
-        formData.append('location', data.location);
-        
-        if (data.project) {
-            formData.append('selected_project', data.project);
-            formData.append('selected_builder', data.builder);
-        }
-
-        try {
-            await fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                body: formData
-            });
-            console.log('Lead emailed successfully via Web3Forms');
-        } catch (error) {
-            console.error('Error sending email lead:', error);
-        }
-    }
-    
-    // Bottom Lead Form
-    const leadForm = document.getElementById('leadForm');
-    const formSuccessState = document.getElementById('formSuccessState');
-    const btnResetForm = document.getElementById('btnResetForm');
-
-    leadForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const submitBtn = leadForm.querySelector('.btn-submit');
-        submitBtn.innerText = 'Routing Lead...';
-        submitBtn.disabled = true;
-
-        const leadData = {
-            name: document.getElementById('formName').value,
-            phone: document.getElementById('formPhone').value,
-            property_type: document.getElementById('formProperty').value,
-            budget: document.getElementById('formBudget').value,
-            location: document.getElementById('formLocation').value,
-            project: 'General Inquiry',
-            builder: 'BB Realty'
-        };
-
-        // Send Email notifications if API key is configured
-        await sendEmailLead(leadData);
-
-        // Open WhatsApp chat prefilled with info
-        sendWhatsAppLead(leadData);
-
-        setTimeout(() => {
-            leadForm.style.display = 'none';
-            formSuccessState.classList.add('active');
-            
-            submitBtn.innerText = 'Request Callback';
-            submitBtn.disabled = false;
-        }, 1000);
-    });
-
-    btnResetForm.addEventListener('click', () => {
-        formSuccessState.classList.remove('active');
-        leadForm.style.display = 'flex';
-        leadForm.reset();
-    });
 
 
 
