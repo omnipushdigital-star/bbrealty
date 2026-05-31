@@ -286,10 +286,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         const baseSrc = "https://link.msgsndr.com/widget/form/nwHklUMHGDfLp7UoKtBb";
                         let params = `tag=${encodeURIComponent(source)}&source=${encodeURIComponent(source)}&Source=${encodeURIComponent(source)}&utm_source=${encodeURIComponent(source)}`;
                         if (project) {
-                            params += `&project=${encodeURIComponent(project)}&Project=${encodeURIComponent(project)}&project_name=${encodeURIComponent(project)}&property=${encodeURIComponent(project)}&property_name=${encodeURIComponent(project)}&selected_project=${encodeURIComponent(project)}`;
+                            params += `&project=${encodeURIComponent(project)}` +
+                                      `&Project=${encodeURIComponent(project)}` +
+                                      `&project_name=${encodeURIComponent(project)}` +
+                                      `&Project_Name=${encodeURIComponent(project)}` +
+                                      `&projectName=${encodeURIComponent(project)}` +
+                                      `&ProjectName=${encodeURIComponent(project)}` +
+                                      `&property=${encodeURIComponent(project)}` +
+                                      `&Property=${encodeURIComponent(project)}` +
+                                      `&property_name=${encodeURIComponent(project)}` +
+                                      `&Property_Name=${encodeURIComponent(project)}` +
+                                      `&propertyName=${encodeURIComponent(project)}` +
+                                      `&PropertyName=${encodeURIComponent(project)}` +
+                                      `&selected_project=${encodeURIComponent(project)}` +
+                                      `&selected_property=${encodeURIComponent(project)}` +
+                                      `&selectedProject=${encodeURIComponent(project)}` +
+                                      `&selectedProperty=${encodeURIComponent(project)}` +
+                                      `&interested_project=${encodeURIComponent(project)}` +
+                                      `&interestedProject=${encodeURIComponent(project)}` +
+                                      `&interested_property=${encodeURIComponent(project)}` +
+                                      `&interestedProperty=${encodeURIComponent(project)}`;
                         }
                         if (builder) {
-                            params += `&builder=${encodeURIComponent(builder)}&Builder=${encodeURIComponent(builder)}&builder_name=${encodeURIComponent(builder)}&selected_builder=${encodeURIComponent(builder)}`;
+                            params += `&builder=${encodeURIComponent(builder)}` +
+                                      `&Builder=${encodeURIComponent(builder)}` +
+                                      `&builder_name=${encodeURIComponent(builder)}` +
+                                      `&Builder_Name=${encodeURIComponent(builder)}` +
+                                      `&builderName=${encodeURIComponent(builder)}` +
+                                      `&BuilderName=${encodeURIComponent(builder)}` +
+                                      `&selected_builder=${encodeURIComponent(builder)}` +
+                                      `&selectedBuilder=${encodeURIComponent(builder)}`;
                         }
 
                         // Smooth transition once the new dynamic GHL form loads
