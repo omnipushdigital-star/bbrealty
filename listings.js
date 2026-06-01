@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openDetailModal(id) {
-        const prop = propertiesList.find(p => p.id === id);
+        const prop = propertiesList.find(p => String(p.id) === String(id));
         if (!prop) return;
 
         const typeLabel = prop.type === 'residential' ? 'Residential Development' :
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openEditModal(id) {
-        const prop = propertiesList.find(p => p.id === id);
+        const prop = propertiesList.find(p => String(p.id) === String(id));
         if (!prop) return;
 
         editingPropertyId = prop.id;
@@ -1030,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 8. Admin Property Deletion Action
     // ==========================================================================
     async function confirmAndDeleteProperty(id) {
-        const prop = propertiesList.find(p => p.id === id);
+        const prop = propertiesList.find(p => String(p.id) === String(id));
         if (!prop) return;
 
         const confirmMsg = `Are you sure you want to permanently delete "${prop.name}" from the BB Realty Listings database?\nThis action cannot be undone.`;
