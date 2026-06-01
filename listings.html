@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties Portal | BB Realty Gurgaon Premium Listings</title>
+    <meta name="description" content="Explore and filter premium luxury properties in Gurgaon and Dwarka Expressway. Gated villas, residential penthouses, commercial shops, and agriculture land listings.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="BB realty logo without BG.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Core Stylesheet & Listings CSS -->
+    <link rel="stylesheet" href="listings.css">
+</head>
+<body class="portal-body">
+
+    <!-- Sticky Header Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo-wrapper">
+                <img src="BB realty logo without BG.png" alt="BB Realty Logo" class="site-logo">
+            </a>
+            
+            <nav class="nav-menu" id="navMenu">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html#services" class="nav-link">Services</a></li>
+                    <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                    <li><a href="index.html#locations" class="nav-link">Locations</a></li>
+                    <li><a href="index.html#about" class="nav-link">About Us</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                    <li><a href="listings.html" class="nav-link active">Properties</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="btn btn-navy-outline nav-call-btn" id="btnShowPublicAddModal" style="padding: 10px 18px; font-size: 13px; font-weight:700;">Post Property</button>
+                <!-- Admin Lock button -->
+                <button class="admin-lock-btn" id="adminLockBtn" title="Admin Console Access">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </button>
+
+                <a href="tel:+919729255525" class="btn btn-navy-outline nav-call-btn">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <span>+91 97292 55525</span>
+                </a>
+                
+                <button class="hamburger-menu" id="menuToggle" aria-label="Toggle Navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer Overlay -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <img src="BB realty logo without BG.png" alt="BB Realty Logo" class="site-logo">
+            <button class="drawer-close" id="drawerClose" aria-label="Close Navigation">&times;</button>
+        </div>
+        <ul class="drawer-list">
+            <li><a href="index.html" class="drawer-link">Home</a></li>
+            <li><a href="index.html#services" class="drawer-link">Services</a></li>
+            <li><a href="index.html#projects" class="drawer-link">Projects</a></li>
+            <li><a href="index.html#locations" class="drawer-link">Locations</a></li>
+            <li><a href="index.html#about" class="drawer-link">About Us</a></li>
+            <li><a href="index.html#contact" class="drawer-link">Contact</a></li>
+            <li><a href="listings.html" class="drawer-link">Browse Properties</a></li>
+        </ul>
+        <div class="drawer-actions">
+            <a href="tel:+919729255525" class="btn btn-navy-outline w-100 mb-3">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                Call Support
+            </a>
+        </div>
+    </div>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- Portal Hero Section -->
+    <section class="portal-hero">
+        <div class="container portal-hero-container">
+            <h1>Premium Listings Portal</h1>
+            <p>Direct real estate consulting, verified luxury floor plans, and elite commercial spaces in Gurugram’s high-growth sectors.</p>
+        </div>
+    </section>
+
+    <!-- Main Portal Grid -->
+    <div class="container">
+        <div class="portal-container">
+            
+            <!-- Glassmorphic Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <div class="filter-sidebar-header">
+                    <h3>Search Console</h3>
+                    <button class="btn-reset-filters" id="btnResetFilters">Reset</button>
+                </div>
+
+                <!-- Text Search -->
+                <div class="filter-group">
+                    <label class="group-title">Keywords</label>
+                    <div class="search-input-wrapper">
+                        <input type="text" id="filterSearch" placeholder="Search project, builder...">
+                        <svg class="search-icon-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Property Category -->
+                <div class="filter-group">
+                    <label class="group-title">Category</label>
+                    <select id="filterType" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="residential">Residential Properties</option>
+                        <option value="commercial">Commercial Hubs</option>
+                        <option value="agriculture">Agricultural Lands</option>
+                    </select>
+                </div>
+
+                <!-- Strategic Corridors -->
+                <div class="filter-group">
+                    <label class="group-title">Location Corridor</label>
+                    <select id="filterCorridor" class="filter-select">
+                        <option value="all">All Locations</option>
+                        <option value="dxp">Dwarka Expressway</option>
+                        <option value="new-gurgaon">New Gurgaon Corridor</option>
+                        <option value="spr">SPR Road Corridor</option>
+                        <option value="63">Sector 63</option>
+                        <option value="90">Sector 90</option>
+                        <option value="113">Sector 113</option>
+                    </select>
+                </div>
+
+                <!-- BHK Configuration -->
+                <div class="filter-group">
+                    <label class="group-title">BHK Size</label>
+                    <div class="bhk-pills">
+                        <div>
+                            <input type="checkbox" id="bhk1" class="bhk-pill-checkbox" value="1">
+                            <label for="bhk1" class="bhk-pill-label">1</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="bhk2" class="bhk-pill-checkbox" value="2">
+                            <label for="bhk2" class="bhk-pill-label">2</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="bhk3" class="bhk-pill-checkbox" value="3">
+                            <label for="bhk3" class="bhk-pill-label">3</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="bhk4" class="bhk-pill-checkbox" value="4">
+                            <label for="bhk4" class="bhk-pill-label">4+</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Construction Status -->
+                <div class="filter-group">
+                    <label class="group-title">Development Status</label>
+                    <div class="filter-options-list">
+                        <label class="option-checkbox-label">
+                            <input type="checkbox" class="filter-status-checkbox" value="new-launch">
+                            <span>New Launches</span>
+                        </label>
+                        <label class="option-checkbox-label">
+                            <input type="checkbox" class="filter-status-checkbox" value="under-construction">
+                            <span>Under Construction</span>
+                        </label>
+                        <label class="option-checkbox-label">
+                            <input type="checkbox" class="filter-status-checkbox" value="ready-to-move">
+                            <span>Ready to Move</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Grid & Main Stream -->
+            <main class="portal-main-stream">
+
+                <!-- Admin Dashboard (Unveiled on login) -->
+                <div class="admin-controls-dashboard" id="adminDashboard" style="display: none;">
+                    <div class="admin-info">
+                        <h4>Admin Management Dashboard</h4>
+                        <p>Authorized access unlocked. You can append new luxury projects or delete listing properties.</p>
+                    </div>
+                    <div class="admin-actions-flex">
+                        <button class="btn btn-gold" id="btnShowAddModal">
+                            <svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add New Project
+                        </button>
+                        <button class="btn btn-navy-outline" id="btnLogoutAdmin">Log Out</button>
+                    </div>
+                </div>
+
+                <!-- Results Header Controls -->
+                <div class="portal-results-header">
+                    <div class="results-count">
+                        Showing <span>0</span> premium properties matching
+                    </div>
+                    <div class="sort-select-wrapper">
+                        <span class="sort-label">Sort By:</span>
+                        <select id="filterSort" class="sort-select">
+                            <option value="default">Newest Additions</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="alphabetical">Alphabetical (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Listings Grid -->
+                <div class="listings-portal-grid" id="listingsGrid">
+                    <!-- Dynamic rendering outputs here -->
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Auth PIN Modal Dialog -->
+    <div class="modal-dialog-overlay" id="auth-modal">
+        <div class="modal-dialog-card modal-dialog-card--auth">
+            <button class="modal-close" aria-label="Close Modal">&times;</button>
+            <div class="modal-header" style="text-align: center; margin-bottom: 20px;">
+                <svg style="width:42px;height:42px;color:var(--secondary-color);margin:0 auto 10px auto;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <h3 class="modal-title" style="font-size:22px; font-weight:800;">Admin Authentication</h3>
+                <p class="modal-desc" style="font-size:13px; color:var(--text-muted);">Please enter your security access PIN code to unlock the admin editing dashboard panel.</p>
+            </div>
+            
+            <input type="password" id="authPin" placeholder="••••••" maxlength="8">
+            <div id="authError" style="color:#DC2626; font-family:var(--font-body); font-size:13px; font-weight:600; margin-bottom:15px; display:none;"></div>
+            
+            <button class="btn btn-gold w-100" id="btnSubmitPin">Unlock Console</button>
+        </div>
+    </div>
+
+    <!-- Admin Form Modal: Add New Project -->
+    <div class="modal-dialog-overlay" id="add-project-modal">
+        <div class="modal-dialog-card modal-dialog-card--large">
+            <button class="modal-close" aria-label="Close Modal">&times;</button>
+            <div class="modal-header" style="margin-bottom:30px;">
+                <h3 class="modal-title" style="font-size:26px; font-weight:800; color:var(--primary-color);">Publish Premium Real Estate Project</h3>
+                <p class="modal-desc" style="font-size:14px; color:var(--text-muted);">Append a new development to the BB Realty database listings portal. All fields are parsed dynamically.</p>
+            </div>
+
+            <form id="addProjectForm">
+                <!-- Owner Contact Group (Visible/required for public submissions) -->
+                <div id="ownerContactGroup" style="display: none; background-color: rgba(200, 155, 60, 0.05); padding: 18px; border-radius: 8px; border: 1px dashed rgba(200, 155, 60, 0.5); margin-bottom: 20px; grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div style="grid-column: 1 / -1; font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px;">Owner / Broker Contact Info (Confidential)</div>
+                    <div class="form-group-custom" style="margin-bottom: 0;">
+                        <label for="ownerName">Your Name *</label>
+                        <input type="text" id="ownerName" placeholder="e.g. Naveen Saini">
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 0;">
+                        <label for="ownerPhone">Phone Number *</label>
+                        <input type="text" id="ownerPhone" placeholder="e.g. +91 97292 55525">
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 0;">
+                        <label for="ownerUserType">I am a *</label>
+                        <select id="ownerUserType" style="background-color: var(--bg-white);">
+                            <option value="owner">Property Owner</option>
+                            <option value="broker">Real Estate Broker</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label for="projName">Project Showcase Title *</label>
+                        <input type="text" id="projName" placeholder="e.g. DLF The Arbour" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label for="projBuilder">Developer / Builder Name *</label>
+                        <input type="text" id="projBuilder" placeholder="e.g. DLF Group" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label for="projType">Property Category *</label>
+                        <select id="projType" required>
+                            <option value="residential">Residential Development</option>
+                            <option value="commercial">Commercial Center</option>
+                            <option value="agriculture">Agricultural Farmland</option>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label for="projStatus">Construction Development Status *</label>
+                        <select id="projStatus" required>
+                            <option value="new-launch">New Launch Pipeline</option>
+                            <option value="under-construction">Under Construction Progress</option>
+                            <option value="ready-to-move">Ready to Move In</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label for="projLocation">Sector Location & corridor *</label>
+                        <input type="text" id="projLocation" placeholder="e.g. Sector 63, Gurgaon" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label for="projBhkText">BHK/Configuration Layouts *</label>
+                        <input type="text" id="projBhkText" placeholder="e.g. 3 & 4 BHK Luxury Apartments" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label for="projPriceNum">Investment Cost Price (in Crores) *</label>
+                        <input type="number" step="0.01" id="projPriceNum" placeholder="e.g. 2.85" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label for="projSize">Total Area Dimension (in sq ft) *</label>
+                        <input type="number" id="projSize" placeholder="e.g. 2400" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label for="projRera">RERA Approval Number</label>
+                        <input type="text" id="projRera" placeholder="e.g. RC/REP/HARERA/2023/54">
+                    </div>
+                    <div class="form-group-custom">
+                        <label>Select Project Amenities</label>
+                        <div style="font-family:var(--font-body); font-size:12px; color:var(--text-muted); margin-bottom:8px;">Check all included facilities:</div>
+                    </div>
+                </div>
+
+                <!-- Custom Amenities Matrix Grid -->
+                <div class="filter-group" style="margin-bottom: 24px;">
+                    <div class="amenities-form-grid">
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Swimming Pool" checked>
+                            <span>Swimming Pool</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Gymnasium" checked>
+                            <span>Gymnasium</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Clubhouse" checked>
+                            <span>Clubhouse</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="24/7 Security" checked>
+                            <span>24/7 Security</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Power Backup" checked>
+                            <span>Power Backup</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Jogging Track">
+                            <span>Jogging Track</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Smart Home Automation">
+                            <span>Automation</span>
+                        </label>
+                        <label class="amenity-checkbox-label">
+                            <input type="checkbox" class="amenity-form-checkbox" value="Private Forest Park">
+                            <span>Forest Park</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group-custom">
+                    <label for="projDesc">Detailed Architectural Overview description *</label>
+                    <textarea id="projDesc" placeholder="Describe the design structure, ventilation advantages, structural layout premium fittings, builder history and sector investment appreciation indexes..." required></textarea>
+                </div>
+
+                <!-- 3-Slot Image Gallery Upload Grid -->
+                <div class="form-group-custom" style="margin-bottom: 30px;">
+                    <label style="margin-bottom: 12px; display: block;">Premium Property Gallery *</label>
+                    <div class="upload-slots-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                        
+                        <!-- Slot 1: Showcase Image (Primary) -->
+                        <div class="upload-slot-wrapper">
+                            <span class="upload-slot-title" style="font-size: 11px; font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Showcase Image *</span>
+                            <div class="image-dropzone-wrapper" id="imageDropzone1" style="padding: 20px 10px; min-height: 110px; display: flex; align-items: center; justify-content: center;">
+                                <div class="dropzone-content" style="gap: 4px;">
+                                    <svg class="dropzone-icon" style="width: 20px; height: 20px; margin-bottom: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div class="dropzone-text" style="font-size: 11px; font-weight: 700;"><span>Upload Main</span></div>
+                                    <div style="font-size: 8px; color: var(--text-muted);">Max 5MB</div>
+                                </div>
+                                <input type="file" id="projectImageFile1" accept="image/*">
+                            </div>
+                            <div class="image-preview-container" id="imagePreviewContainer1" style="margin-top: 0; height: 110px;">
+                                <img src="" id="imagePreviewImg1" alt="Showcase Preview">
+                                <button type="button" class="btn-remove-preview" id="btnRemovePreview1" title="Remove Show Image">&times;</button>
+                            </div>
+                        </div>
+
+                        <!-- Slot 2: Gallery Image 2 (Optional) -->
+                        <div class="upload-slot-wrapper">
+                            <span class="upload-slot-title" style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Gallery Image 2</span>
+                            <div class="image-dropzone-wrapper" id="imageDropzone2" style="padding: 20px 10px; min-height: 110px; display: flex; align-items: center; justify-content: center;">
+                                <div class="dropzone-content" style="gap: 4px;">
+                                    <svg class="dropzone-icon" style="width: 20px; height: 20px; margin-bottom: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div class="dropzone-text" style="font-size: 11px; font-weight: 700;"><span>Upload Photo 2</span></div>
+                                    <div style="font-size: 8px; color: var(--text-muted);">Optional</div>
+                                </div>
+                                <input type="file" id="projectImageFile2" accept="image/*">
+                            </div>
+                            <div class="image-preview-container" id="imagePreviewContainer2" style="margin-top: 0; height: 110px;">
+                                <img src="" id="imagePreviewImg2" alt="Gallery 2 Preview">
+                                <button type="button" class="btn-remove-preview" id="btnRemovePreview2" title="Remove Gallery 2">&times;</button>
+                            </div>
+                        </div>
+
+                        <!-- Slot 3: Gallery Image 3 (Optional) -->
+                        <div class="upload-slot-wrapper">
+                            <span class="upload-slot-title" style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Gallery Image 3</span>
+                            <div class="image-dropzone-wrapper" id="imageDropzone3" style="padding: 20px 10px; min-height: 110px; display: flex; align-items: center; justify-content: center;">
+                                <div class="dropzone-content" style="gap: 4px;">
+                                    <svg class="dropzone-icon" style="width: 20px; height: 20px; margin-bottom: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div class="dropzone-text" style="font-size: 11px; font-weight: 700;"><span>Upload Photo 3</span></div>
+                                    <div style="font-size: 8px; color: var(--text-muted);">Optional</div>
+                                </div>
+                                <input type="file" id="projectImageFile3" accept="image/*">
+                            </div>
+                            <div class="image-preview-container" id="imagePreviewContainer3" style="margin-top: 0; height: 110px;">
+                                <img src="" id="imagePreviewImg3" alt="Gallery 3 Preview">
+                                <button type="button" class="btn-remove-preview" id="btnRemovePreview3" title="Remove Gallery 3">&times;</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:16px; border-top:1px solid var(--border-color); padding-top:24px;">
+                    <button type="button" class="btn btn-navy-outline modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-gold" style="box-shadow:var(--shadow-gold);">Publish Listing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Public dynamic Detail Modal -->
+    <div class="modal-dialog-overlay" id="property-detail-modal">
+        <div class="modal-dialog-card modal-dialog-card--detail">
+            <!-- Dynamic compilation from listings.js -->
+        </div>
+    </div>
+
+    <!-- Success Modal Dialog -->
+    <div class="modal-dialog-overlay" id="success-modal">
+        <div class="modal-dialog-card" style="max-width:480px; text-align:center; padding:45px 35px;">
+            <button class="modal-close-success modal-close" style="font-size: 28px; top: 15px; right: 20px; background:none; border:none; cursor:pointer;">&times;</button>
+            <div style="width: 70px; height: 70px; background-color: rgba(16, 185, 129, 0.1); border-radius: 50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 24px auto;">
+                <svg style="width:36px; height:36px; color:#10B981;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h3 style="font-size:24px; font-weight:800; color:var(--primary-color); margin-bottom:10px;">Project Listing Published!</h3>
+            <p style="font-family:var(--font-body); font-size:14px; color:var(--text-muted); line-height:1.7; margin-bottom:30px;">The new premium development has been compiled and saved permanently into the BB Realty database listings grid on the live server.</p>
+            <button class="btn btn-gold w-100 modal-close-success">Dismiss Window</button>
+        </div>
+    </div>
+
+    <!-- Custom listings page scripting -->
+    <script src="listings.js"></script>
+</body>
+</html>

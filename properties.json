@@ -1,0 +1,737 @@
+[
+  {
+    "id": "1",
+    "name": "DLF The Arbour",
+    "builder": "dlf",
+    "builderName": "DLF Group",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 63, Gurgaon",
+    "price": "₹8.5 Cr* Onwards",
+    "priceNum": 8.5,
+    "bhk": [
+      4
+    ],
+    "bhkText": "4 BHK Luxury Residences",
+    "size": "3950 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "DLF The Arbour is a new landmark in luxury living. These meticulously crafted apartments combine modern elegance with ultimate convenience. Surrounded by pristine greens and equipped with premium amenities, it offers a lifestyle of unmatched prestige and comfort.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Landscaped Gardens",
+      "Tennis Court",
+      "Spa & Wellness"
+    ],
+    "rera": "RC/REP/HARERA/2023/54"
+  },
+  {
+    "id": "2",
+    "name": "M3M Crown",
+    "builder": "m3m",
+    "builderName": "M3M India",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 111, Dwarka Expressway",
+    "price": "₹2.8 Cr* Onwards",
+    "priceNum": 2.8,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Ultra Luxury Apartments",
+    "size": "2100 - 2800 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "M3M Crown represents the epitome of high-class urban living along the premium Dwarka Expressway corridor. Offering majestic layout designs, open ventilation spaces, and world-class landscaping, it is perfect for modern families seeking connectivity and lifestyle excellence.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Jogging Track",
+      "Mini Theatre",
+      "Kids Play Area"
+    ],
+    "rera": "RC/REP/HARERA/2023/18"
+  },
+  {
+    "id": "3",
+    "name": "Smartworld One DXP",
+    "builder": "smartworld",
+    "builderName": "Smartworld Developers",
+    "type": "residential",
+    "status": "ready-to-move",
+    "location": "Sector 113, Dwarka Expressway",
+    "price": "₹2.4 Cr* Onwards",
+    "priceNum": 2.4,
+    "bhk": [
+      2,
+      3,
+      4
+    ],
+    "bhkText": "2.5, 3.5 & 4.5 BHK Luxury Residences",
+    "size": "1375 - 2600 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Smartworld One DXP is strategically located at the gateway of Delhi and Gurgaon. It offers smart luxury homes with modern automation systems, extensive high-end clubs, sports facilities, and direct access to major transit lines.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Smart Home Automation",
+      "Co-working Space",
+      "Tennis Court"
+    ],
+    "rera": "RC/REP/HARERA/2022/92"
+  },
+  {
+    "id": "4",
+    "name": "Godrej Aristocrat",
+    "builder": "godrej",
+    "builderName": "Godrej Properties",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 49, Gurgaon",
+    "price": "₹3.2 Cr* Onwards",
+    "priceNum": 3.2,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Luxury Condos",
+    "size": "1850 - 2750 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Godrej Aristocrat is designed with absolute sophistication. Features gorgeous forest-themed landscaping, half a million trees, standard size private decks, and five-tier security standard infrastructure along Golf Course Extension Road.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Private Forest Park",
+      "Sky Lounge",
+      "Indoor Games Room"
+    ],
+    "rera": "RC/REP/HARERA/2023/108"
+  },
+  {
+    "id": "5",
+    "name": "Signature Global Deluxe DXP",
+    "builder": "signature",
+    "builderName": "Signature Global",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 37D, Dwarka Expressway",
+    "price": "₹2.1 Cr* Onwards",
+    "priceNum": 2.1,
+    "bhk": [
+      3
+    ],
+    "bhkText": "3 & 3.5 BHK Premium Residences",
+    "size": "1650 - 2000 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "Signature Global Deluxe DXP is a gold standard offering in affordable luxury. Features double height entrance lobbies, standard scale clubhouses, multiple gaming lounges, and quick connection lines to the industrial hubs of Gurugram.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Amphitheatre",
+      "Kids Splash Pool",
+      "Badminton Court"
+    ],
+    "rera": "RC/REP/HARERA/2024/03"
+  },
+  {
+    "id": "6",
+    "name": "Elan The Presidential",
+    "builder": "elan",
+    "builderName": "Elan Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 106, Dwarka Expressway",
+    "price": "₹4.8 Cr* Onwards",
+    "priceNum": 4.8,
+    "bhk": [
+      3,
+      4,
+      5
+    ],
+    "bhkText": "3, 4 & 5 BHK Super Luxury Apartments",
+    "size": "2400 - 4100 sq.ft.",
+    "image": "assets/images/commercial.png",
+    "description": "Elan The Presidential stands as the most luxurious gated community along Dwarka Expressway. Boasting expansive master suites, imported marble finishes, premium design details, and standard setting sports infrastructure for the elite class.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Olympic-sized Pool",
+      "Tennis Court",
+      "Cigar Lounge",
+      "Golf putting green"
+    ],
+    "rera": "RC/REP/HARERA/2022/114"
+  },
+  {
+    "id": "7",
+    "name": "M3M Jewel",
+    "builder": "m3m",
+    "builderName": "M3M India",
+    "type": "commercial",
+    "status": "new-launch",
+    "location": "MG Road, Gurgaon",
+    "price": "₹1.5 Cr* Onwards",
+    "priceNum": 1.5,
+    "bhk": [],
+    "bhkText": "Luxury Retail & Office Spaces",
+    "size": "500 - 3000 sq.ft.",
+    "image": "assets/images/commercial.png",
+    "description": "M3M Jewel is Gurugram's first absolute boutique luxury retail development, located right on MG Road. Built to attract international high-street brands, premium dining lines, and Class-A office hubs.",
+    "amenities": [
+      "24/7 Security",
+      "Power Backup",
+      "High-speed Elevators",
+      "Centrally Air Conditioned",
+      "Parking Space",
+      "Food Court Area",
+      "Escalators",
+      "Wi-Fi Connectivity"
+    ],
+    "rera": "RC/REP/HARERA/2023/33"
+  },
+  {
+    "id": "8",
+    "name": "Elan Epic",
+    "builder": "elan",
+    "builderName": "Elan Group",
+    "type": "commercial",
+    "status": "ready-to-move",
+    "location": "Sector 70, Gurgaon",
+    "price": "₹2.0 Cr* Onwards",
+    "priceNum": 2,
+    "bhk": [],
+    "bhkText": "Food Court, Multiplex & Retail",
+    "size": "450 - 2500 sq.ft.",
+    "image": "assets/images/commercial.png",
+    "description": "Elan Epic is a magnificent commercial project, displaying one of India's largest water-body courtyards inside a retail complex. Featuring luxury cinemas, Grade-A showrooms, and scenic waterfront dining lines.",
+    "amenities": [
+      "24/7 Security",
+      "Power Backup",
+      "Centrally Air Conditioned",
+      "Multiplex Theatre",
+      "Water Cascades",
+      "Valet Parking",
+      "Fibre Connectivity"
+    ],
+    "rera": "RC/REP/HARERA/2018/12"
+  },
+  {
+    "id": "9",
+    "name": "M2K Aura",
+    "builder": "m2k",
+    "builderName": "M2K Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 104, Dwarka Expressway",
+    "price": "₹2.5 Cr* Onwards",
+    "priceNum": 2.5,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "Low Rise Premium Floors",
+    "size": "1800 - 2400 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "M2K Aura offers premium low-rise living within a secured, gated community. Ideal for buyers seeking privacy, spacious floor configurations, independent terrace rights, and dedicated private parking bays.",
+    "amenities": [
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Landscaped Gardens",
+      "Jogging Track",
+      "Kids Play Area",
+      "Dedicated Parking Lobbies"
+    ],
+    "rera": "RC/REP/HARERA/2023/88"
+  },
+  {
+    "id": "10",
+    "name": "Agrante Vanmaya",
+    "builder": "agrante",
+    "builderName": "Agrante Realty",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 106, Dwarka Expressway",
+    "price": "₹3.2 Cr* Onwards",
+    "priceNum": 3.2,
+    "bhk": [
+      4
+    ],
+    "bhkText": "Low Rise Luxury Villas",
+    "size": "3200 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Agrante Vanmaya offers independent luxury villas for buyers seeking unmatched sophistication and spatial size. Complete with independent garden lawns, structural balconies, elegant wooden decks, and private lifts.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Private Lift",
+      "Private Lawn",
+      "Billiards Room"
+    ],
+    "rera": "RC/REP/HARERA/2023/95"
+  },
+  {
+    "id": "11",
+    "name": "Satya Lavante",
+    "builder": "satya",
+    "builderName": "Satya Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 104, Dwarka Expressway",
+    "price": "₹3.8 Cr* Onwards",
+    "priceNum": 3.8,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK High Rise Residences",
+    "size": "1950 - 2650 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "Satya Lavante features spectacular high-rise residences along Dwarka Expressway, built with premium safety alignments. Units display wide corner balconies and gorgeous natural morning ventilation structures.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Basketball Court",
+      "Library Room",
+      "Multipurpose Hall"
+    ],
+    "rera": "RC/REP/HARERA/2022/41"
+  },
+  {
+    "id": "12",
+    "name": "Signature Global Sarvam",
+    "builder": "signature",
+    "builderName": "Signature Global",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 37D, Dwarka Expressway",
+    "price": "₹2.8 Cr* Onwards",
+    "priceNum": 2.8,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Luxury Apartments",
+    "size": "1780 - 2250 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Signature Global Sarvam is one of Gurgaon's most expected premium high-rise projects. Offering absolute smart layout plans, fully air-conditioned lobbies, extensive parks, and massive structural pools.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Tennis Court",
+      "Senior Citizen Sitting Area",
+      "Mini Theatre"
+    ],
+    "rera": "RC/REP/HARERA/2024/09"
+  },
+  {
+    "id": "13",
+    "name": "Ganga Kashi",
+    "builder": "ganga",
+    "builderName": "Ganga Realty",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 89, New Gurgaon",
+    "price": "₹2.1 Cr* Onwards",
+    "priceNum": 2.1,
+    "bhk": [
+      3
+    ],
+    "bhkText": "Low Rise Premium Floors",
+    "size": "1450 - 1800 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Ganga Kashi is a tranquil gated development in Sector 89 Gurugram. Independent luxury floors backed by premium security setups, beautiful inner walking loops, and central children play yards.",
+    "amenities": [
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Inner Walk Loop",
+      "Badminton Court",
+      "Kids Play Arena",
+      "Gymnasium"
+    ],
+    "rera": "RC/REP/HARERA/2023/120"
+  },
+  {
+    "id": "14",
+    "name": "JMS Majestic",
+    "builder": "jms",
+    "builderName": "JMS Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 9, Manesar",
+    "price": "₹1.8 Cr* Onwards",
+    "priceNum": 1.8,
+    "bhk": [
+      2,
+      3
+    ],
+    "bhkText": "Low Rise Premium Floors",
+    "size": "1200 - 1650 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "JMS Majestic presents an affordable yet luxurious low-rise floor option close to the industrial corridor of Manesar. Safe gated boundaries with a robust central garden lawn.",
+    "amenities": [
+      "24/7 Security",
+      "Power Backup",
+      "Central Park",
+      "Gymnasium",
+      "Yoga Deck",
+      "Convenience Stores"
+    ],
+    "rera": "RC/REP/HARERA/2023/65"
+  },
+  {
+    "id": "15",
+    "name": "SS One",
+    "builder": "ss",
+    "builderName": "SS Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 83, New Gurgaon",
+    "price": "₹2.4 Cr* Onwards",
+    "priceNum": 2.4,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Luxury Residences",
+    "size": "1650 - 2300 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "SS One delivers luxury high-rise lifestyles in Sector 83 Gurugram. Fully equipped with modern fixtures, gorgeous wooden panels, private elevator links, and large premium standard balconies.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Table Tennis Arena",
+      "Spa & Sauna Room",
+      "Squash Court"
+    ],
+    "rera": "RC/REP/HARERA/2022/75"
+  },
+  {
+    "id": "16",
+    "name": "SS Cendana",
+    "builder": "ss",
+    "builderName": "SS Group",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 90, New Gurgaon",
+    "price": "₹2.8 Cr* Onwards",
+    "priceNum": 2.8,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Premium Apartments",
+    "size": "1450 - 1850 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "SS Cendana features modern architectural designs in a premium community location. Promising spectacular panoramic views, smart room sizes, dynamic layout structures, and seamless sector accessibility.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Multipurpose Sports Court",
+      "Central Water Body",
+      "Zen Garden"
+    ],
+    "rera": "RC/REP/HARERA/2023/110"
+  },
+  {
+    "id": "17",
+    "name": "Ganga Valley",
+    "builder": "ganga",
+    "builderName": "Ganga Realty",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 78, SPR Road",
+    "price": "₹1.9 Cr* Onwards",
+    "priceNum": 1.9,
+    "bhk": [
+      2,
+      3
+    ],
+    "bhkText": "Low Rise Premium Floors",
+    "size": "1350 - 1700 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Ganga Valley offers independent luxury living in Sector 78 Gurgaon. With high construction quality standards, modern modular kitchen fittings, dedicated parking bays, and elegant standard sizing.",
+    "amenities": [
+      "24/7 Security",
+      "Power Backup",
+      "Jogging Loop",
+      "Clubhouse",
+      "Indoor Lounge Games",
+      "Kids Play Area"
+    ],
+    "rera": "RC/REP/HARERA/2023/45"
+  },
+  {
+    "id": "18",
+    "name": "Hyde Park",
+    "builder": "nimbus",
+    "builderName": "Nimbus Group",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 78, SPR Road",
+    "price": "₹2.3 Cr* Onwards",
+    "priceNum": 2.3,
+    "bhk": [
+      3
+    ],
+    "bhkText": "Low Rise Luxury Floors",
+    "size": "1600 - 2000 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Hyde Park is a premium enclave of low-rise residences. Combining classic British architecture with modern amenities, these homes offer absolute spatial sizes, open terrace structures, and elite communities.",
+    "amenities": [
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Walking Paths",
+      "Multi-sports Court",
+      "Private Terrace Garden Option"
+    ],
+    "rera": "RC/REP/HARERA/2023/125"
+  },
+  {
+    "id": "19",
+    "name": "M3M Antalya Hills",
+    "builder": "m3m",
+    "builderName": "M3M India",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "Sector 79, SPR Road",
+    "price": "₹2.8 Cr* Onwards",
+    "priceNum": 2.8,
+    "bhk": [
+      2,
+      3
+    ],
+    "bhkText": "Low Rise Premium Floors",
+    "size": "1500 - 1900 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "M3M Antalya Hills is a nature-inspired low-rise community in Sector 79 Gurgaon. It features open hillside wind ducts, high construction design indexes, massive club settings, and beautiful landscape walking paths.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Hill-view Decks",
+      "Sports Arena",
+      "Yoga & Meditation Studio"
+    ],
+    "rera": "RC/REP/HARERA/2023/102"
+  },
+  {
+    "id": "20",
+    "name": "Eldeco Fiesta",
+    "builder": "eldeco",
+    "builderName": "Eldeco Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "SPR Road, Gurgaon",
+    "price": "₹3.5 Cr* Onwards",
+    "priceNum": 3.5,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Luxury Residences",
+    "size": "1800 - 2500 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "Eldeco Fiesta offers premium luxury residences designed to elevate your living experience. Built along SPR Road, these apartments combine modern features, vast room size structures, and solid construction parameters.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Squash Court",
+      "Mini Theatre",
+      "Kids Splash Park"
+    ],
+    "rera": "RC/REP/HARERA/2022/98"
+  },
+  {
+    "id": "21",
+    "name": "Eldeco Soul",
+    "builder": "eldeco",
+    "builderName": "Eldeco Group",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "SPR Road, Gurgaon",
+    "price": "₹4.2 Cr* Onwards",
+    "priceNum": 4.2,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Ultra Luxury Residences",
+    "size": "2100 - 2900 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Eldeco Soul represents a sophisticated sanctuary for premium living along SPR Road. Meticulously designed high-rise units, five-tier automated security, standard scale private decks, and a signature luxury club experience.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Infinity Edge Pool",
+      "Private Theatre",
+      "Steam & Sauna Rooms",
+      "Basketball Court"
+    ],
+    "rera": "RC/REP/HARERA/2023/145"
+  },
+  {
+    "id": "22",
+    "name": "Conscient Elaina",
+    "builder": "conscient",
+    "builderName": "Conscient Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 80, SPR Road",
+    "price": "₹3.8 Cr* Onwards",
+    "priceNum": 3.8,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Premium Apartments",
+    "size": "1950 - 2600 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "Conscient Elaina stands as a gorgeous development focused on wellness and premium living in Sector 80 Gurugram. It features large corner windows, robust steel framework cores, and beautiful green corridor vistas.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Yoga Lawn",
+      "Tennis Court",
+      "Jogging Track",
+      "Wellness Centre"
+    ],
+    "rera": "RC/REP/HARERA/2023/62"
+  },
+  {
+    "id": "23",
+    "name": "Signature Global Tonino Lamborghini",
+    "builder": "signature",
+    "builderName": "Signature Global",
+    "type": "residential",
+    "status": "new-launch",
+    "location": "SPR Road, Gurgaon",
+    "price": "₹8.0 Cr* Onwards",
+    "priceNum": 8,
+    "bhk": [
+      4
+    ],
+    "bhkText": "Ultra Luxury Branded Residences",
+    "size": "4200 sq.ft.",
+    "image": "assets/images/hero-bg.png",
+    "description": "Signature Global Tonino Lamborghini is an elite collaboration presenting supercar-themed branded luxury residences along SPR Road. Italian marble flooring, aerodynamic design arches, private elevators, and exclusive VIP luxury clubs.",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "VIP Cigar Lounge",
+      "Private Dining Room",
+      "Decadent Spa",
+      "Infinity Pool",
+      "Private Elevator"
+    ],
+    "rera": "RC/REP/HARERA/2024/22"
+  },
+  {
+    "id": "24",
+    "name": "Trehan",
+    "builder": "trehan",
+    "builderName": "Trehan Group",
+    "type": "residential",
+    "status": "under-construction",
+    "location": "Sector 70, SPR Road",
+    "price": "₹2.5 Cr* Onwards",
+    "priceNum": 2.5,
+    "bhk": [
+      3,
+      4
+    ],
+    "bhkText": "3 & 4 BHK Premium Residences",
+    "size": "1700 - 2400 sq.ft.",
+    "image": "assets/images/residential.png",
+    "description": "Trehan in Sector 70 Gurugram delivers classic premium residential apartments in one of Gurugram's fastest-growing sectors. Gated layouts with fully integrated security networks, children playing rooms, and gymnasiums.",
+    "amenities": [
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup",
+      "Gymnasium",
+      "Indoor Playrooms",
+      "Central Lawn Arena",
+      "Jogging Track"
+    ],
+    "rera": "RC/REP/HARERA/2023/70"
+  },
+  {
+    "name": "M3M Soulitude",
+    "builderName": "M3M",
+    "builder": "m3m",
+    "type": "residential",
+    "status": "ready-to-move",
+    "location": "Sector 89",
+    "price": "₹1.5 Cr* Onwards",
+    "priceNum": 1.5,
+    "size": "1150 sq.ft.",
+    "description": "A low rise residential project near Dwarka expressway, Gurgaon",
+    "rera": "",
+    "amenities": [
+      "Swimming Pool",
+      "Gymnasium",
+      "Clubhouse",
+      "24/7 Security",
+      "Power Backup"
+    ],
+    "bhkText": "1,2, 3 BHK",
+    "bhk": [
+      1,
+      2,
+      3
+    ],
+    "image": "assets/images/uploaded_1780309831558.jpeg",
+    "id": "25",
+    "isCustom": true
+  }
+]

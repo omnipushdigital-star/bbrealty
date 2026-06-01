@@ -12,3 +12,7 @@ npm-debug.log*
 
 # Server lock files
 package-lock.json
+
+# Ignore dynamically uploaded property photos
+assets/images/uploaded_*
+
