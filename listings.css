@@ -1138,3 +1138,69 @@
     }
 }
 
+/* Premium Gold Flashing/Pulsing Effect for Post Property Button */
+.btn-premium-flash {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a1e3b 0%, #153564 50%, #0a1e3b 100%) !important;
+    border: 1.5px solid var(--secondary-color) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    animation: goldPulse 2.5s infinite ease-in-out;
+    transition: all 0.3s ease;
+}
+
+.btn-premium-flash:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5) !important;
+    background: var(--secondary-color) !important;
+    color: #0c1a30 !important;
+    border-color: var(--secondary-color) !important;
+}
+
+/* Premium shimmer sweeping across the button */
+.btn-premium-flash::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    animation: goldShimmer 4s infinite linear;
+}
+
+@keyframes goldPulse {
+    0% {
+        box-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
+        border-color: rgba(212, 175, 55, 0.4) !important;
+    }
+    50% {
+        box-shadow: 0 0 16px rgba(212, 175, 55, 0.65);
+        border-color: rgba(212, 175, 55, 1) !important;
+    }
+    100% {
+        box-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
+        border-color: rgba(212, 175, 55, 0.4) !important;
+    }
+}
+
+@keyframes goldShimmer {
+    0% {
+        left: -150%;
+    }
+    25% {
+        left: 150%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+
+
