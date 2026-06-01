@@ -7,6 +7,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    const API_BASE_URL = "https://bbrealty.stocky-navi.workers.dev/api/properties";
+
     // --- State variables ---
     let propertiesList = [];
     let filteredList = [];
@@ -124,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadProperties() {
         showGridSkeleton();
         try {
-            const response = await fetch('/api/properties');
+            const response = await fetch(API_BASE_URL);
             if (!response.ok) throw new Error('API connection error');
             propertiesList = await response.json();
             
@@ -970,7 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.innerText = editingPropertyId ? "Saving Project Updates..." : "Uploading Project Assets...";
 
         try {
-            let url = '/api/properties';
+            let url = API_BASE_URL;
             let method = 'POST';
             
             if (editingPropertyId) {
@@ -1034,7 +1036,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const confirmMsg = `Are you sure you want to permanently delete "${prop.name}" from the BB Realty Listings database?\nThis action cannot be undone.`;
         if (confirm(confirmMsg)) {
             try {
-                const response = await fetch(`/api/properties?id=${id}`, {
+                const response = await fetch(`${API_BASE_URL}?id=${id}`, {
                     method: 'DELETE'
                 });
 
