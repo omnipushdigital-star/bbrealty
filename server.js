@@ -1,8 +1,40 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
-const PORT = 3000;
+// 1. Load environment variables securely from .env
+function loadEnv() {
+    const envPath = path.join(__dirname, '.env');
+    if (!fs.existsSync(envPath)) {
+        console.error("Critical: Could not locate .env credentials file.");
+        process.exit(1);
+    }
+    const content = fs.readFileSync(envPath, 'utf8');
+    const env = {};
+    content.split(/\r?\n/).forEach(line => {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
+        if (match) {
+            let val = match[2].trim();
+            if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+            env[match[1]] = val;
+        }
+    });
+    return env;
+}
+
+const env = loadEnv();
+const PORT = parseInt(env.PORT || 3000, 10);
+
+const CLOUDFLARE_ACCOUNT_ID = env.CLOUDFLARE_ACCOUNT_ID;
+const CLOUDFLARE_API_TOKEN = env.CLOUDFLARE_API_TOKEN;
+const CLOUDFLARE_D1_DATABASE_ID = env.CLOUDFLARE_D1_DATABASE_ID;
+
+const R2_BUCKET_NAME = env.R2_BUCKET_NAME;
+const R2_ACCESS_KEY_ID = env.R2_ACCESS_KEY_ID;
+const R2_SECRET_ACCESS_KEY = env.R2_SECRET_ACCESS_KEY;
+const R2_PUBLIC_URL = env.R2_PUBLIC_URL;
+
 const MIME_TYPES = {
     '.html': 'text/html',
     '.css': 'text/css',
@@ -15,331 +47,325 @@ const MIME_TYPES = {
     '.json': 'application/json'
 };
 
-const PROPERTIES_FILE = path.join(__dirname, 'properties.json');
-const UPLOAD_DIR = path.join(__dirname, 'assets', 'images');
+// 2. Initialize Cloudflare R2 S3 Client
+const s3Client = new S3Client({
+    region: 'auto',
+    endpoint: `https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+        accessKeyId: R2_ACCESS_KEY_ID,
+        secretAccessKey: R2_SECRET_ACCESS_KEY
+    }
+});
 
-// Ensure upload directory exists
-if (!fs.existsSync(UPLOAD_DIR)) {
-    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// 3. Cloudflare D1 query REST helper
+async function queryD1(sql, params = []) {
+    const url = `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/d1/database/${CLOUDFLARE_D1_DATABASE_ID}/query`;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${CLOUDFLARE_API_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ sql, params })
+    });
+    
+    const data = await response.json();
+    if (!data.success) {
+        throw new Error(`D1 API Error: ${JSON.stringify(data.errors)}`);
+    }
+    return data.result[0];
 }
 
+// 4. Cloudflare R2 Upload Helper
+async function uploadToR2(base64Payload, suffix) {
+    if (!base64Payload || !base64Payload.startsWith('data:image/')) return "";
+    const matches = base64Payload.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) return "";
+    
+    const ext = matches[1];
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, 'base64');
+    
+    const filename = `uploaded_${Date.now()}_${suffix}.${ext}`;
+    const key = `assets/images/${filename}`;
+    
+    const command = new PutObjectCommand({
+        Bucket: R2_BUCKET_NAME,
+        Key: key,
+        Body: buffer,
+        ContentType: `image/${ext}`
+    });
+    
+    await s3Client.send(command);
+    return `${R2_PUBLIC_URL}/${key}`;
+}
+
+// 5. Cloudflare R2 Delete/Sweep Helper
+async function deleteFromR2(url) {
+    if (!url || !url.startsWith(R2_PUBLIC_URL)) return;
+    const key = url.replace(`${R2_PUBLIC_URL}/`, '');
+    
+    const command = new DeleteObjectCommand({
+        Bucket: R2_BUCKET_NAME,
+        Key: key
+    });
+    
+    try {
+        await s3Client.send(command);
+    } catch (e) {
+        console.error("Failed to delete from R2:", e);
+    }
+}
+
+// 6. Create Web Server
 http.createServer((req, res) => {
-    // 1. Decodes URL and parses components
+    // Decodes URL and parses components
     const decodedUrl = decodeURIComponent(req.url);
     const urlObj = new URL(decodedUrl, `http://${req.headers.host || 'localhost'}`);
     const pathname = urlObj.pathname;
 
-    // 2. Intercept Dynamic API Calls
+    // Intercept Dynamic API Calls
     if (pathname === '/api/properties') {
         
-        // GET Request: Serve all properties
+        // GET Request: Serve all properties from D1
         if (req.method === 'GET') {
-            fs.readFile(PROPERTIES_FILE, 'utf8', (err, data) => {
-                if (err) {
+            queryD1("SELECT * FROM properties ORDER BY id DESC")
+                .then(resD1 => {
+                    const rows = resD1.results || [];
+                    const properties = rows.map(row => {
+                        return {
+                            ...row,
+                            bhk: JSON.parse(row.bhk || '[]'),
+                            amenities: JSON.parse(row.amenities || '[]'),
+                            isCustom: row.isCustom === 1
+                        };
+                    });
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(properties));
+                })
+                .catch(err => {
+                    console.error("GET Error:", err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: "Failed to read database file" }));
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(data);
-            });
+                    res.end(JSON.stringify({ error: "Failed to read database from D1" }));
+                });
             return;
         }
         
-        // POST Request: Add new property with image decoding
+        // POST Request: Add new property with R2 upload & D1 save
         else if (req.method === 'POST') {
             let body = '';
             req.on('data', chunk => {
                 body += chunk.toString();
             });
-            
-            req.on('end', () => {
+            req.on('end', async () => {
                 try {
                     const newProperty = JSON.parse(body);
-                    
-                    // Validate basic metadata
-                    if (!newProperty.name || !newProperty.builderName || !newProperty.price || !newProperty.location) {
-                        res.writeHead(400, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: "Missing required property parameters" }));
-                        return;
-                    }
 
-                    // Read current database listings
-                    fs.readFile(PROPERTIES_FILE, 'utf8', (err, data) => {
-                        if (err) {
-                            res.writeHead(500, { 'Content-Type': 'application/json' });
-                            res.end(JSON.stringify({ error: "Database file read failed" }));
-                            return;
-                        }
+                    // Upload images to Cloudflare R2
+                    const imgUrl = await uploadToR2(newProperty.imageFilePayload, 'main');
+                    const img2Url = await uploadToR2(newProperty.image2FilePayload, 'gallery2');
+                    const img3Url = await uploadToR2(newProperty.image3FilePayload, 'gallery3');
 
-                        let properties = [];
-                        try {
-                            properties = JSON.parse(data);
-                        } catch (e) {
-                            properties = [];
-                        }
+                    newProperty.image = imgUrl || "assets/images/residential.png";
+                    newProperty.image2 = img2Url || "";
+                    newProperty.image3 = img3Url || "";
 
-                        // Image decoding: process all 3 slots
-                        const imageSlots = [
-                            { payloadKey: 'imageFilePayload', targetKey: 'image', suffix: 'main' },
-                            { payloadKey: 'image2FilePayload', targetKey: 'image2', suffix: 'gallery2' },
-                            { payloadKey: 'image3FilePayload', targetKey: 'image3', suffix: 'gallery3' }
-                        ];
+                    const priceVal = parseFloat(newProperty.priceNum || 0);
+                    const priceText = newProperty.price || `₹${priceVal} Cr* Onwards`;
 
-                        for (const { payloadKey, targetKey, suffix } of imageSlots) {
-                            const payload = newProperty[payloadKey];
-                            if (payload && payload.startsWith('data:image/')) {
-                                const matches = payload.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
-                                if (matches && matches.length === 3) {
-                                    const ext = matches[1]; // extension (e.g. png, jpeg, webp)
-                                    const base64Data = matches[2]; // pure base64 text
-                                    const buffer = Buffer.from(base64Data, 'base64');
-                                    
-                                    const filename = `uploaded_${Date.now()}_${suffix}.${ext}`;
-                                    const relativePath = `assets/images/${filename}`;
-                                    const absolutePath = path.join(UPLOAD_DIR, filename);
-                                    
-                                    // Save file to assets/images
-                                    fs.writeFileSync(absolutePath, buffer);
-                                    
-                                    // Set image path
-                                    newProperty[targetKey] = relativePath;
-                                }
-                            }
-                            delete newProperty[payloadKey];
-                        }
-                        
-                        // Create unique id
-                        const maxId = properties.reduce((max, p) => Math.max(max, parseInt(p.id || 0, 10)), 0);
-                        newProperty.id = (maxId + 1).toString();
-                        newProperty.isCustom = true; // Mark as custom upload
+                    // Generate sequential ID
+                    const maxIdD1 = await queryD1("SELECT IFNULL(MAX(id), 0) as maxId FROM properties");
+                    const nextId = (maxIdD1.results[0].maxId + 1).toString();
 
-                        // Ensure default attributes
-                        newProperty.rera = newProperty.rera || "";
-                        newProperty.bhk = newProperty.bhk || [];
-                        newProperty.amenities = newProperty.amenities || [];
-                        newProperty.image2 = newProperty.image2 || "";
-                        newProperty.image3 = newProperty.image3 || "";
-                        newProperty.ownerUserType = newProperty.ownerUserType || "admin";
-                        
-                        // If no custom image successfully decoded, fallback
-                        if (!newProperty.image) {
-                            newProperty.image = "assets/images/residential.png";
-                        }
+                    const sql = `
+                        INSERT INTO properties (
+                            id, name, builderName, builder, type, status, location, price, priceNum, size, description, rera, bhk, bhkText, amenities, image, image2, image3, ownerName, ownerPhone, ownerUserType, isCustom
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                    `;
 
-                        // Append and save back to JSON database
-                        properties.push(newProperty);
-                        fs.writeFileSync(PROPERTIES_FILE, JSON.stringify(properties, null, 2), 'utf8');
+                    const params = [
+                        parseInt(nextId, 10),
+                        newProperty.name || "",
+                        newProperty.builderName || "",
+                        newProperty.builder || "",
+                        newProperty.type || "",
+                        newProperty.status || "",
+                        newProperty.location || "",
+                        priceText,
+                        priceVal,
+                        newProperty.size || "",
+                        newProperty.description || "",
+                        newProperty.rera || "",
+                        JSON.stringify(newProperty.bhk || []),
+                        newProperty.bhkText || "",
+                        JSON.stringify(newProperty.amenities || []),
+                        newProperty.image,
+                        newProperty.image2,
+                        newProperty.image3,
+                        newProperty.ownerName || "",
+                        newProperty.ownerPhone || "",
+                        newProperty.ownerUserType || ""
+                    ];
 
-                        // Respond
-                        res.writeHead(201, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify(newProperty));
-                    });
+                    await queryD1(sql, params);
 
-                } catch (error) {
-                    console.error('POST Error:', error);
+                    const responsePayload = {
+                        ...newProperty,
+                        id: nextId,
+                        isCustom: true
+                    };
+                    res.writeHead(201, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(responsePayload));
+                } catch (err) {
+                    console.error('POST Error:', err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: "Failed to process form request" }));
+                    res.end(JSON.stringify({ error: "Failed to store property on Cloudflare" }));
                 }
             });
             return;
         }
-        
-        // PUT Request: Update existing property listing
+
+        // PUT Request: Update listing & sweep R2 uploads
         else if (req.method === 'PUT') {
             let body = '';
             req.on('data', chunk => {
                 body += chunk.toString();
             });
-            
-            req.on('end', () => {
+            req.on('end', async () => {
                 try {
                     const updatedProperty = JSON.parse(body);
-                    
-                    if (!updatedProperty.id || !updatedProperty.name || !updatedProperty.builderName || !updatedProperty.price || !updatedProperty.location) {
-                        res.writeHead(400, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: "Missing required property parameters for update" }));
+
+                    // Fetch old property from D1
+                    const oldPropRes = await queryD1("SELECT * FROM properties WHERE id = ?", [parseInt(updatedProperty.id, 10)]);
+                    if (!oldPropRes.results || oldPropRes.results.length === 0) {
+                        res.writeHead(404, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "Property ID not found" }));
                         return;
                     }
+                    const oldProperty = oldPropRes.results[0];
 
-                    fs.readFile(PROPERTIES_FILE, 'utf8', (err, data) => {
-                        if (err) {
-                            res.writeHead(500, { 'Content-Type': 'application/json' });
-                            res.end(JSON.stringify({ error: "Database file read failed" }));
-                            return;
+                    updatedProperty.image = oldProperty.image;
+                    updatedProperty.image2 = oldProperty.image2 || "";
+                    updatedProperty.image3 = oldProperty.image3 || "";
+
+                    // Process Slot 1 (Showcase)
+                    if (updatedProperty.imageFilePayload && updatedProperty.imageFilePayload.startsWith('data:image/')) {
+                        const newImgUrl = await uploadToR2(updatedProperty.imageFilePayload, 'main');
+                        if (newImgUrl) {
+                            await deleteFromR2(oldProperty.image);
+                            updatedProperty.image = newImgUrl;
                         }
+                    }
 
-                        let properties = [];
-                        try {
-                            properties = JSON.parse(data);
-                        } catch (e) {
-                            properties = [];
+                    // Process Slot 2 (Gallery 2)
+                    if (updatedProperty.image2Cleared === true) {
+                        await deleteFromR2(oldProperty.image2);
+                        updatedProperty.image2 = "";
+                    } else if (updatedProperty.image2FilePayload && updatedProperty.image2FilePayload.startsWith('data:image/')) {
+                        const newImg2Url = await uploadToR2(updatedProperty.image2FilePayload, 'gallery2');
+                        if (newImg2Url) {
+                            await deleteFromR2(oldProperty.image2);
+                            updatedProperty.image2 = newImg2Url;
                         }
+                    }
 
-                        const index = properties.findIndex(p => p.id === updatedProperty.id);
-                        if (index === -1) {
-                            res.writeHead(404, { 'Content-Type': 'application/json' });
-                            res.end(JSON.stringify({ error: "Property ID not found" }));
-                            return;
+                    // Process Slot 3 (Gallery 3)
+                    if (updatedProperty.image3Cleared === true) {
+                        await deleteFromR2(oldProperty.image3);
+                        updatedProperty.image3 = "";
+                    } else if (updatedProperty.image3FilePayload && updatedProperty.image3FilePayload.startsWith('data:image/')) {
+                        const newImg3Url = await uploadToR2(updatedProperty.image3FilePayload, 'gallery3');
+                        if (newImg3Url) {
+                            await deleteFromR2(oldProperty.image3);
+                            updatedProperty.image3 = newImg3Url;
                         }
+                    }
 
-                        const oldProperty = properties[index];
+                    const priceVal = parseFloat(updatedProperty.priceNum || 0);
+                    const priceText = updatedProperty.price || `₹${priceVal} Cr* Onwards`;
 
-                        // Process all 3 image slots for PUT
-                        const imageSlots = [
-                            { payloadKey: 'imageFilePayload', targetKey: 'image', suffix: 'main', clearedKey: null },
-                            { payloadKey: 'image2FilePayload', targetKey: 'image2', suffix: 'gallery2', clearedKey: 'image2Cleared' },
-                            { payloadKey: 'image3FilePayload', targetKey: 'image3', suffix: 'gallery3', clearedKey: 'image3Cleared' }
-                        ];
+                    const sql = `
+                        UPDATE properties SET
+                            name = ?, builderName = ?, builder = ?, type = ?, status = ?, location = ?, price = ?, priceNum = ?, size = ?, description = ?, rera = ?, bhk = ?, bhkText = ?, amenities = ?, image = ?, image2 = ?, image3 = ?, ownerName = ?, ownerPhone = ?, ownerUserType = ?
+                        WHERE id = ?
+                    `;
 
-                        for (const { payloadKey, targetKey, suffix, clearedKey } of imageSlots) {
-                            // Retain old value by default
-                            updatedProperty[targetKey] = oldProperty[targetKey] || "";
+                    const params = [
+                        updatedProperty.name || "",
+                        updatedProperty.builderName || "",
+                        updatedProperty.builder || "",
+                        updatedProperty.type || "",
+                        updatedProperty.status || "",
+                        updatedProperty.location || "",
+                        priceText,
+                        priceVal,
+                        updatedProperty.size || "",
+                        updatedProperty.description || "",
+                        updatedProperty.rera || "",
+                        JSON.stringify(updatedProperty.bhk || []),
+                        updatedProperty.bhkText || "",
+                        JSON.stringify(updatedProperty.amenities || []),
+                        updatedProperty.image,
+                        updatedProperty.image2,
+                        updatedProperty.image3,
+                        updatedProperty.ownerName || "",
+                        updatedProperty.ownerPhone || "",
+                        updatedProperty.ownerUserType || "",
+                        parseInt(updatedProperty.id, 10)
+                    ];
 
-                            // 1. If explicit deletion flag is true
-                            if (clearedKey && updatedProperty[clearedKey] === true) {
-                                // Clean up the old custom image
-                                const oldImgPath = oldProperty[targetKey];
-                                if (oldImgPath && oldImgPath.startsWith('assets/images/uploaded_')) {
-                                    const oldAbsoluteImgPath = path.join(__dirname, oldImgPath);
-                                    if (fs.existsSync(oldAbsoluteImgPath)) {
-                                        try {
-                                            fs.unlinkSync(oldAbsoluteImgPath);
-                                        } catch (e) {
-                                            console.error(`Failed to delete old ${targetKey}:`, e);
-                                        }
-                                    }
-                                }
-                                updatedProperty[targetKey] = "";
-                            }
-                            
-                            // 2. If new Base64 string payload is supplied
-                            const payload = updatedProperty[payloadKey];
-                            if (payload && payload.startsWith('data:image/')) {
-                                const matches = payload.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
-                                if (matches && matches.length === 3) {
-                                    const ext = matches[1];
-                                    const base64Data = matches[2];
-                                    const buffer = Buffer.from(base64Data, 'base64');
-                                    
-                                    const filename = `uploaded_${Date.now()}_${suffix}.${ext}`;
-                                    const relativePath = `assets/images/${filename}`;
-                                    const absolutePath = path.join(UPLOAD_DIR, filename);
-                                    
-                                    // Save new file
-                                    fs.writeFileSync(absolutePath, buffer);
-                                    
-                                    // Clean up the old custom image
-                                    const oldImgPath = oldProperty[targetKey];
-                                    if (oldImgPath && oldImgPath.startsWith('assets/images/uploaded_')) {
-                                        const oldAbsoluteImgPath = path.join(__dirname, oldImgPath);
-                                        if (fs.existsSync(oldAbsoluteImgPath)) {
-                                            try {
-                                                fs.unlinkSync(oldAbsoluteImgPath);
-                                            } catch (e) {
-                                                console.error(`Failed to clean old ${targetKey}:`, e);
-                                            }
-                                        }
-                                    }
-                                    
-                                    updatedProperty[targetKey] = relativePath;
-                                }
-                            }
-                            
-                            delete updatedProperty[payloadKey];
-                            if (clearedKey) {
-                                delete updatedProperty[clearedKey];
-                            }
-                        }
+                    await queryD1(sql, params);
 
-                        updatedProperty.isCustom = oldProperty.isCustom || false;
-
-                        // Ensure default attributes
-                        updatedProperty.rera = updatedProperty.rera || "";
-                        updatedProperty.bhk = updatedProperty.bhk || [];
-                        updatedProperty.amenities = updatedProperty.amenities || [];
-                        updatedProperty.ownerUserType = updatedProperty.ownerUserType || oldProperty.ownerUserType || "admin";
-
-                        // Merge back
-                        properties[index] = updatedProperty;
-                        fs.writeFileSync(PROPERTIES_FILE, JSON.stringify(properties, null, 2), 'utf8');
-
-                        res.writeHead(200, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify(updatedProperty));
-                    });
-
-                } catch (error) {
-                    console.error('PUT Error:', error);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(updatedProperty));
+                } catch (err) {
+                    console.error('PUT Error:', err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: "Failed to process update request" }));
+                    res.end(JSON.stringify({ error: "Failed to update property on Cloudflare" }));
                 }
             });
             return;
         }
 
-        // DELETE Request: Remove project listing & sweep assets
+        // DELETE Request: Delete listing & sweep R2 bucket
         else if (req.method === 'DELETE') {
             const id = urlObj.searchParams.get('id');
             if (!id) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: "Missing property ID parameter" }));
+                res.end(JSON.stringify({ error: "Missing listing ID parameter" }));
                 return;
             }
 
-            fs.readFile(PROPERTIES_FILE, 'utf8', (err, data) => {
-                if (err) {
-                    res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: "Failed to read properties database" }));
-                    return;
-                }
-
-                let properties = [];
-                try {
-                    properties = JSON.parse(data);
-                } catch (e) {
-                    res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: "Database parse error" }));
-                    return;
-                }
-
-                const propertyIndex = properties.findIndex(p => p.id === id);
-                if (propertyIndex === -1) {
-                    res.writeHead(404, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: "Property ID not found" }));
-                    return;
-                }
-
-                const propertyToDelete = properties[propertyIndex];
-
-                // Sweep associated image assets if they are custom uploads
-                const imagesToSweep = [propertyToDelete.image, propertyToDelete.image2, propertyToDelete.image3];
-                for (const imgPath of imagesToSweep) {
-                    if (imgPath && imgPath.startsWith('assets/images/uploaded_')) {
-                        const absoluteImgPath = path.join(__dirname, imgPath);
-                        if (fs.existsSync(absoluteImgPath)) {
-                            try {
-                                fs.unlinkSync(absoluteImgPath);
-                            } catch (e) {
-                                console.error('Failed to clear file asset:', e);
-                            }
-                        }
+            queryD1("SELECT * FROM properties WHERE id = ?", [parseInt(id, 10)])
+                .then(async oldPropRes => {
+                    if (!oldPropRes.results || oldPropRes.results.length === 0) {
+                        res.writeHead(404, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "Property ID not found" }));
+                        return;
                     }
-                }
+                    const propertyToDelete = oldPropRes.results[0];
 
-                // Filter out the item
-                properties.splice(propertyIndex, 1);
-                
-                // Write back
-                fs.writeFileSync(PROPERTIES_FILE, JSON.stringify(properties, null, 2), 'utf8');
+                    // Delete custom images from Cloudflare R2
+                    await deleteFromR2(propertyToDelete.image);
+                    await deleteFromR2(propertyToDelete.image2);
+                    await deleteFromR2(propertyToDelete.image3);
 
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true, message: `Successfully deleted listing ${id}` }));
-            });
+                    // Delete from D1
+                    await queryD1("DELETE FROM properties WHERE id = ?", [parseInt(id, 10)]);
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true, message: `Successfully deleted listing ${id}` }));
+                })
+                .catch(err => {
+                    console.error('DELETE Error:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: "Failed to delete property from Cloudflare" }));
+                });
             return;
         }
     }
 
-    // 3. Fallback: Static File Server
+    // Fallback: Static File Server
     let filePath = '.' + decodedUrl;
     if (filePath === './') filePath = './index.html';
 
@@ -364,4 +390,3 @@ http.createServer((req, res) => {
 }).listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}/`);
 });
-

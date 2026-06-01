@@ -16,3 +16,7 @@ package-lock.json
 # Ignore dynamically uploaded property photos
 assets/images/uploaded_*
 
+# Environment credentials
+.env
+
+
