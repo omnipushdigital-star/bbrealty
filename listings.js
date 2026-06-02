@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredList = [];
     let isAuthenticated = sessionStorage.getItem('bb_admin_auth') === 'true';
     let editingPropertyId = null;
+    let selectedBudget = 'all';
 
     // --- DOM Elements ---
     const listingsGrid = document.getElementById('listingsGrid');
@@ -120,6 +121,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let image2Cleared = false;
     let image3Cleared = false;
 
+    function parseUrlParameters() {
+        const params = new URLSearchParams(window.location.search);
+        
+        const typeParam = params.get('type');
+        const locationParam = params.get('location');
+        const budgetParam = params.get('budget');
+        
+        if (typeParam) {
+            typeSelect.value = typeParam;
+        }
+        
+        if (locationParam) {
+            const exists = Array.from(corridorSelect.options).some(opt => opt.value === locationParam);
+            if (!exists && locationParam !== 'all') {
+                const opt = document.createElement('option');
+                opt.value = locationParam;
+                opt.textContent = isNaN(locationParam) ? locationParam.replace(/-/g, ' ') : `Sector ${locationParam}`;
+                corridorSelect.appendChild(opt);
+            }
+            corridorSelect.value = locationParam;
+        }
+        
+        if (budgetParam) {
+            selectedBudget = budgetParam;
+        }
+    }
+
     // ==========================================================================
     // 1. Initial Load & Fetch Listings
     // ==========================================================================
@@ -132,6 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Check auth state and toggle views
             checkAuthState();
+
+            // Parse URL parameters from homepage redirect
+            parseUrlParameters();
 
             // Run initial filters and display grid
             applyFilters();
@@ -323,7 +354,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 matchesBhk = false;
             }
 
-            return matchesText && matchesType && matchesLocation && matchesStatus && matchesBhk;
+            // Budget match
+            let matchesBudget = true;
+            if (selectedBudget !== 'all') {
+                const budget = parseFloat(prop.priceNum || 0);
+                if (selectedBudget === 'under-1') {
+                    matchesBudget = budget < 1.0;
+                } else if (selectedBudget === '1-2.5') {
+                    matchesBudget = budget >= 1.0 && budget <= 2.5;
+                } else if (selectedBudget === '2.5-5') {
+                    matchesBudget = budget >= 2.5 && budget <= 5.0;
+                } else if (selectedBudget === '5-10') {
+                    matchesBudget = budget >= 5.0 && budget <= 10.0;
+                } else if (selectedBudget === '10plus') {
+                    matchesBudget = budget > 10.0;
+                }
+            }
+
+            return matchesText && matchesType && matchesLocation && matchesStatus && matchesBhk && matchesBudget;
         });
 
         // Apply Sorting
@@ -353,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sortSelect.value = 'default';
         statusCheckboxes.forEach(cb => cb.checked = false);
         bhkCheckboxes.forEach(cb => cb.checked = false);
+        selectedBudget = 'all';
         applyFilters();
     }
 

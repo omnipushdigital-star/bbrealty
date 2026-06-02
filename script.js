@@ -111,18 +111,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const btnConsoleSearch = document.getElementById('btnConsoleSearch');
-    btnConsoleSearch.addEventListener('click', () => {
-        const propType = document.getElementById('consoleType').value;
-        const locationVal = document.getElementById('consoleLoc').value;
-        const budgetVal = document.getElementById('consoleBudget').value;
+    if (btnConsoleSearch) {
+        btnConsoleSearch.addEventListener('click', () => {
+            const propType = document.getElementById('consoleType').value;
+            const locationVal = document.getElementById('consoleLoc').value;
+            const budgetVal = document.getElementById('consoleBudget').value;
 
-        // Visual scroll transition to Featured Projects section
-        const projectsSection = document.getElementById('projects');
-        projectsSection.scrollIntoView({ behavior: 'smooth' });
-
-        // Apply filters to Featured Projects list based on selections
-        filterFeaturedProjects(propType, locationVal);
-    });
+            // Redirect to listings page with the search parameters
+            window.location.href = `listings.html?type=${encodeURIComponent(propType)}&location=${encodeURIComponent(locationVal)}&budget=${encodeURIComponent(budgetVal)}`;
+        });
+    }
 
     function filterFeaturedProjects(type, location) {
         const cards = document.querySelectorAll('.project-card');
