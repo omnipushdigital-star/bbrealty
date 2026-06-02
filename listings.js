@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredList = [];
     let isAuthenticated = sessionStorage.getItem('bb_admin_auth') === 'true';
     let editingPropertyId = null;
-    let selectedBudget = 'all';
 
     // --- DOM Elements ---
     const listingsGrid = document.getElementById('listingsGrid');
@@ -24,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('filterSearch');
     const typeSelect = document.getElementById('filterType');
     const corridorSelect = document.getElementById('filterCorridor');
+    const budgetSelect = document.getElementById('filterBudget');
     const sortSelect = document.getElementById('filterSort');
     const statusCheckboxes = document.querySelectorAll('.filter-status-checkbox');
     const bhkCheckboxes = document.querySelectorAll('.bhk-pill-checkbox');
@@ -143,8 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
             corridorSelect.value = locationParam;
         }
         
-        if (budgetParam) {
-            selectedBudget = budgetParam;
+        if (budgetParam && budgetSelect) {
+            budgetSelect.value = budgetParam;
         }
     }
 
@@ -295,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const query = searchInput.value.toLowerCase().trim();
         const propType = typeSelect.value;
         const locationVal = corridorSelect.value;
+        const budgetVal = budgetSelect ? budgetSelect.value : 'all';
         const sortVal = sortSelect.value;
 
         // Get checked statuses
@@ -356,17 +357,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Budget match
             let matchesBudget = true;
-            if (selectedBudget !== 'all') {
+            if (budgetVal !== 'all') {
                 const budget = parseFloat(prop.priceNum || 0);
-                if (selectedBudget === 'under-1') {
+                if (budgetVal === 'under-1') {
                     matchesBudget = budget < 1.0;
-                } else if (selectedBudget === '1-2.5') {
+                } else if (budgetVal === '1-2.5') {
                     matchesBudget = budget >= 1.0 && budget <= 2.5;
-                } else if (selectedBudget === '2.5-5') {
+                } else if (budgetVal === '2.5-5') {
                     matchesBudget = budget >= 2.5 && budget <= 5.0;
-                } else if (selectedBudget === '5-10') {
+                } else if (budgetVal === '5-10') {
                     matchesBudget = budget >= 5.0 && budget <= 10.0;
-                } else if (selectedBudget === '10plus') {
+                } else if (budgetVal === '10plus') {
                     matchesBudget = budget > 10.0;
                 }
             }
@@ -398,10 +399,10 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = '';
         typeSelect.value = 'all';
         corridorSelect.value = 'all';
+        if (budgetSelect) budgetSelect.value = 'all';
         sortSelect.value = 'default';
         statusCheckboxes.forEach(cb => cb.checked = false);
         bhkCheckboxes.forEach(cb => cb.checked = false);
-        selectedBudget = 'all';
         applyFilters();
     }
 
@@ -409,6 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', applyFilters);
     typeSelect.addEventListener('change', applyFilters);
     corridorSelect.addEventListener('change', applyFilters);
+    if (budgetSelect) {
+        budgetSelect.addEventListener('change', applyFilters);
+    }
     sortSelect.addEventListener('change', applyFilters);
     statusCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
     bhkCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
